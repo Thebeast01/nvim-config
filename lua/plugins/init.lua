@@ -45,6 +45,9 @@ return {
   end,
   ft = { "markdown" },
   },
+  {
+    "tpope/vim-fugitive",
+  },
 
   {
     "nvim-treesitter/nvim-treesitter",
