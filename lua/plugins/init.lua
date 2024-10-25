@@ -1,5 +1,5 @@
 return {
-  -- Try to learn about vim fugitive 
+  -- Try to learn about vim fugitive
   {
     "stevearc/conform.nvim",
     event = "BufWritePre", -- uncomment for format on save
@@ -7,29 +7,188 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
+    dependencies = {
+      "hrsh7th/nvim-cmp",
+      "hrsh7th/cmp-nvim-lsp",
+    },
     config = function()
       require "configs.lspconfig"
       local lspconfig = require "lspconfig"
-      -- TypeScript and JavaScript
-      lspconfig.ts_ls.setup {}
-      -- Prisma
-      lspconfig.prismals.setup {}
-      -- HTML
-      lspconfig.html.setup {}
-      -- CSS
-      lspconfig.cssls.setup {}
-      -- Tailwind CSS
-      lspconfig.tailwindcss.setup {}
-      -- Lua
-      lspconfig.lua.setup {}
+
+      -- Common LSP settings for auto-imports and code completion
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      local on_attach = function(client, bufnr)
+        -- Enable completion triggered by <c-x><c-o>
+        vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+        -- Common keymappings
+        local bufopts = { noremap = true, silent = true, buffer = bufnr }
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+        vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+        vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+        vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
+        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
+        vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+
+        -- Format on save
+        if client.server_capabilities.documentFormattingProvider then
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            callback = function()
+              vim.lsp.buf.format { async = false }
+            end,
+          })
+        end
+
+        -- Enable inlay hints if available
+        -- if client.server_capabilities.inlayHintProvider then
+        --   vim.lsp.inlay_hint(bufnr, true)
+        -- end
+      end
+
+      -- TypeScript/JavaScript configuration
+      lspconfig.ts_ls.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          typescript = {
+            inlayHints = {
+              includeInlayParameterNameHints = 'all',
+              includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+              includeInlayFunctionParameterTypeHints = true,
+              includeInlayVariableTypeHints = true,
+              includeInlayPropertyDeclarationTypeHints = true,
+              includeInlayFunctionLikeReturnTypeHints = true,
+              includeInlayEnumMemberValueHints = true,
+            },
+            suggest = {
+              completeFunctionCalls = true,
+              autoImports = true,
+            },
+          },
+          javascript = {
+            inlayHints = {
+              includeInlayParameterNameHints = 'all',
+              includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+              includeInlayFunctionParameterTypeHints = true,
+              includeInlayVariableTypeHints = true,
+              includeInlayPropertyDeclarationTypeHints = true,
+              includeInlayFunctionLikeReturnTypeHints = true,
+              includeInlayEnumMemberValueHints = true,
+            },
+            suggest = {
+              completeFunctionCalls = true,
+              autoImports = true,
+            },
+          },
+        },
+      }
+
+      -- Golang configuration
+      lspconfig.gopls.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          gopls = {
+            analyses = {
+              unusedparams = true,
+            },
+            staticcheck = true,
+            gofumpt = true,
+            usePlaceholders = true,
+            completeUnimported = true,
+            experimentalPostfixCompletions = true,
+          },
+        },
+      }
+
+      -- Prisma configuration
+      lspconfig.prismals.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+      }
+
+      -- HTML configuration
+      lspconfig.html.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          html = {
+            format = {
+              enable = true,
+            },
+            hover = {
+              documentation = true,
+              references = true,
+            },
+          },
+        },
+      }
+
+      -- CSS configuration
+      lspconfig.cssls.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          css = {
+            lint = {
+              unknownAtRules = "ignore"
+            },
+          },
+        },
+      }
+
+      -- Tailwind configuration
+      lspconfig.tailwindcss.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          tailwindCSS = {
+            experimental = {
+              classRegex = {
+                "tw`([^`]*)",
+                "tw=\"([^\"]*)",
+                "tw={\"([^\"}]*)",
+                "tw\\.\\w+`([^`]*)",
+                "tw\\(.*?\\)`([^`]*)",
+              },
+            },
+          },
+        },
+      }
+
+      -- Lua configuration
+      lspconfig.lua_ls.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = { 'vim' },
+            },
+            workspace = {
+              library = vim.api.nvim_get_runtime_file("", true),
+              checkThirdParty = false,
+            },
+            telemetry = {
+              enable = false,
+            },
+          },
+        },
+      }
     end,
   },
   {
     "lewis6991/gitsigns.nvim",
-      config =function()
-        require('gitsigns').setup()
-        vim.keymap.set("n", "<leader>gp",":Gitsigns preview_hunk<CR>")
-      end,
+    config = function()
+      require('gitsigns').setup()
+      vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>")
+    end,
   },
 
   {
@@ -38,12 +197,12 @@ return {
   },
   {
     "iamcco/markdown-preview.nvim",
-  cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-  build = "cd app && yarn install",
-  init = function()
-    vim.g.mkdp_filetypes = { "markdown" }
-  end,
-  ft = { "markdown" },
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && yarn install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
   },
   {
     "tpope/vim-fugitive",
