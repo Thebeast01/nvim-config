@@ -5,7 +5,69 @@ return {
     event = "BufWritePre", -- uncomment for format on save
     opts = require "configs.conform",
   },
+  -- {
+  --   "AlexvZyl/nordic.nvim",
+  --   lazy = false,
+  --   priority = 1000,
+  --   transparent = true,
+  --   config = function()
+  --     require("nordic").setup({
+  --       transparent = {
+  --         bg = true,
+  --         float = true,
+  --       }
+  --     })
+  --   end
+  --
+  -- },
   {
+    "tiagovla/tokyodark.nvim",
+    opts = {
+      -- custom options here
+      styles = {
+        comments = { italic = true },
+        keywords = { italic = true },
+        transparent_background = true,
+        comments = { fg = "#ff0000" },
+
+      }
+    },
+    config = function(_, opts)
+      require("tokyodark").setup(opts) -- calling setup is optional
+      vim.cmd [[colorscheme tokyodark]]
+    end,
+  },
+  {
+    "rebelot/kanagawa.nvim",
+    config = function()
+      require('kanagawa').setup({
+        compile = false,  -- enable compiling the colorscheme
+        undercurl = true, -- enable undercurls
+        commentStyle = { italic = true },
+        functionStyle = {},
+        keywordStyle = { italic = true },
+        statementStyle = { bold = true },
+        typeStyle = {},
+        transparent = false,   -- do not set background color
+        dimInactive = false,   -- dim inactive window `:h hl-NormalNC`
+        terminalColors = true, -- define vim.g.terminal_color_{0,17}
+        colors = {             -- add/modify theme and palette colors
+          palette = {},
+          theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
+        },
+        overrides = function(colors) -- add/modify highlights
+          return {}
+        end,
+        theme = "wave",  -- Load "wave" theme when 'background' option is not set
+        background = {   -- map the value of 'background' option to a theme
+          dark = "wave", -- try "dragon" !
+          light = "lotus"
+        },
+      })
+    end
+  },
+  {
+
     "neovim/nvim-lspconfig",
     dependencies = {
       "hrsh7th/nvim-cmp",

@@ -2,15 +2,18 @@
 -- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
 -- Please read that file to know all available options :(
 
----@type ChadrcConfig
+--@type ChadrcConfig
 local M = {}
 M.base46 = {
-  theme = "gruvchad",
+  theme = "tokyodark",
   transparency = true,
-  -- hl_override = {
-  -- 	Comment = { italic = true },
-  -- 	["@comment"] = { italic = true },
-  -- },
+  hl_override = {
+    Comment = { italic = true },
+    ["@comment"] = {
+      italic = true,
+      fg = "#7c7c7c",
+      underdashed = true
+    },
+  },
 }
-
 return M
