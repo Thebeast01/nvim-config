@@ -39,8 +39,8 @@ end
 --  Config For Neovide
 if vim.g.neovide then
   vim.g.neovide_transparency = 0.5
-  vim.o.guifont = "ComicShannsMono Nerd Font Mono:h11"
-  vim.g.neovide_theme = 'gruvchad'
+  vim.o.guifont = "JetBrainsMono Nerd Font:h10"
+  vim.g.neovide_theme = 'rosepine'
   vim.g.neovide_refresh_rate = 75
   vim.g.neovide_fullscreen = true
   vim.g.neovide_remember_window_size = true

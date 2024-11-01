@@ -20,6 +20,8 @@ return {
   --   end
   --
   -- },
+  { "rose-pine/neovim", name = "rose-pine" },
+
   {
     "tiagovla/tokyodark.nvim",
     opts = {
@@ -28,7 +30,6 @@ return {
         comments = { italic = true },
         keywords = { italic = true },
         transparent_background = true,
-        comments = { fg = "#ff0000" },
 
       }
     },
