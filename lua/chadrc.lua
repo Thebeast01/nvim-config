@@ -17,6 +17,7 @@ M.base46 = {
       -- fg = "#6e9695" -- Pale Green
       -- fg = "#6E8B7F" -- Pale Blue
       --underdashed = true
+
     },
   },
 }
