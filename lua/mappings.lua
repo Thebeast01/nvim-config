@@ -20,8 +20,6 @@ map("n", "<leader>1", function() harpoon:list():select(1) end)
 map("n", "<leader>2", function() harpoon:list():select(2) end)
 map("n", "<leader>3", function() harpoon:list():select(3) end)
 map("n", "<leader>4", function() harpoon:list():select(4) end)
-
--- Additional useful keymaps
 -- Navigate to next/previous files in list
 map("n", "<a-l>", function() harpoon:list():prev() end)
 map("n", "<a-k>", function() harpoon:list():next() end)
