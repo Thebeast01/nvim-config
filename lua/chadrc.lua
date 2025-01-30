@@ -8,12 +8,21 @@ local M = {}
 M.base46 = {
   theme = "rosepine",
   transparency = true,
+
   hl_override = {
-    Comment = { italic = true, fg = "teal" },
+    Comment = { italic = true },
     ["@comment"] = { italic = true },
+    ["@variable"] = { italic = true },
     ["@function"] = { italic = true },
-    ["@keyword"] = { italic = true },
+    ["@parameter"] = { italic = true },
+    ["@method"] = { italic = true },
+    ["@property"] = { italic = true },
+    ["@field"] = { italic = true },
     ["@type"] = { italic = true },
+    ["@return"] = { italic = true },
+    ["@throws"] = { italic = true },
+    ["@constructor"] = { italic = true },
+    ["@deprecated"] = { italic = true },
   },
 }
 
