@@ -18,7 +18,14 @@ end)
 map("n", "<C-e>", function()
   harpoon.ui:toggle_quick_menu(harpoon:list())
 end)
-
+-- Toggle Tabline
+map("n", "<leader>tt", function()
+  if vim.opt.showtabline:get() == 0 then
+    vim.opt.showtabline = 2
+  else
+    vim.opt.showtabline = 0
+  end
+end, { desc = "Toggle tabs visibility" })
 -- Navigation
 map("n", "<leader>1", function()
   harpoon:list():select(1)
