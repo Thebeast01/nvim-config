@@ -1,32 +1,32 @@
 require "nvchad.mappings"
 
--- add yours here
 
+-- Add yours here
 local map = vim.keymap.set
-local harpoon = require "harpoon"
-
+local harpoon = require("harpoon")
+local harpoon_ui = require("harpoon.ui")
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
+
+-- Copilot Accept Suggestion
 map("i", "<C-p>", "copilot#Accept('<CR>')", { noremap = true, silent = true, expr = true, replace_keycodes = false })
-map("n", "<leader>gt", ":Gitsigns toggle_current_line_blame<CR>", {})
--- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+
+-- Git Blame Toggle
+map("n", "<leader>gt", ":Gitsigns toggle_current_line_blame<CR>", { noremap = true, silent = true })
+
+-- Toggle Relative Numbers
 map("n", "<leader>r", ":set relativenumber!<CR>", { noremap = true, silent = true })
--- harpoon
+
+-- Harpoon: Add File
 map("n", "<leader>a", function()
   harpoon:list():add()
-end)
-map("n", "<C-e>", function()
-  harpoon.ui:toggle_quick_menu(harpoon:list())
-end)
--- Toggle Tabline
-map("n", "<leader>tt", function()
-  if vim.opt.showtabline:get() == 0 then
-    vim.opt.showtabline = 2
-  else
-    vim.opt.showtabline = 0
-  end
-end, { desc = "Toggle tabs visibility" })
--- Navigation
+end, { desc = "Add file to Harpoon" })
+
+-- -- Harpoon: Toggle Quick Menu
+-- map("n", "<C-e>", function()
+--   harpoon_ui.toggle_quick_menu(harpoon:list())
+-- end, { desc = "Toggle Harpoon quick menu" })
+-- Harpoon Navigation
 map("n", "<leader>1", function()
   harpoon:list():select(1)
 end)
@@ -39,20 +39,31 @@ end)
 map("n", "<leader>4", function()
   harpoon:list():select(4)
 end)
--- Navigate to next/previous files in list
-map("n", "<a-l>", function()
+
+-- Harpoon: Previous & Next
+map("n", "<A-l>", function()
   harpoon:list():prev()
-end)
-map("n", "<a-k>", function()
+end, { desc = "Previous Harpoon file" })
+map("n", "<A-k>", function()
   harpoon:list():next()
-end)
+end, { desc = "Next Harpoon file" })
+
+-- Harpoon: Clear List
 map("n", "<leader>hc", function()
   harpoon:list():clear()
-end)
+end, { desc = "Clear Harpoon list" })
+
 -- Markdown Preview
 map("n", "<leader>mp", ":MarkdownPreview<CR>", { noremap = true, silent = true })
 
-local cmp = require "cmp"
+-- Toggle Tabline
+map("n", "<leader>tt", function()
+  vim.opt.showtabline = vim.opt.showtabline:get() == 0 and 2 or 0
+end, { desc = "Toggle tabline visibility" })
+
+
+-- CMP Autocompletion Setup
+local cmp = require("cmp")
 cmp.setup {
   mapping = {
     -- Use Tab to navigate through and select completion items

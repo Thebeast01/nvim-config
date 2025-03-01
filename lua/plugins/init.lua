@@ -11,9 +11,7 @@ return {
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = function()
-      require("nvim-surround").setup {
-        -- Configuration here, or leave empty to use defaults
-      }
+      require("nvim-surround").setup()
     end,
   },
   -- Obsidian.nvim config  start
@@ -55,115 +53,7 @@ return {
   --   opts = {},
   -- },
   { "ellisonleao/glow.nvim", config = true,     cmd = "Glow" },
-  {
-    "folke/snacks.nvim",
-    priority = 1000,
-    lazy = false,
-    ---@type snacks.Config
-    opts = {
-      bigfile = { enabled = true },
-      dashboard = {
-        enabled = true,
-        ---@class snacks.dashboard.Config
-        ---@field enabled? boolean
-        ---@field sections snacks.dashboard.Section
-        ---@field formats table<string, snacks.dashboard.Text|fun(item:snacks.dashboard.Item, ctx:snacks.dashboard.Format.ctx):snacks.dashboard.Text>
-        {
-          width = 60,
-          row = nil,                                                                   -- dashboard position. nil for center
-          col = nil,                                                                   -- dashboard position. nil for center
-          pane_gap = 4,                                                                -- empty columns between vertical panes
-          autokeys = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", -- autokey sequence
-          -- These settings are used by some built-in sections
-          preset = {
-            -- Defaults to a picker that supports `fzf-lua`, `telescope.nvim` and `mini.pick`
-            ---@type fun(cmd:string, opts:table)|nil
-            pick = nil,
-            -- Used by the `keys` section to show keymaps.
-            -- Set your custom keymaps here.
-            -- When using a function, the `items` argument are the default keymaps.
-            ---@type snacks.dashboard.Item[]
-            keys = {
-              { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
-              { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-              { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
-              { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
-              {
-                icon = " ",
-                key = "c",
-                desc = "Config",
-                action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
-              },
-              { icon = " ", key = "s", desc = "Restore Session", section = "session" },
-              { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
-              { icon = " ", key = "q", desc = "Quit", action = ":qa" },
-            },
-            -- Used by the `header` section
-            header = [[
-███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
-████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
-██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
-██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
-██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
-╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
-          },
-          -- item field formatters
-          formats = {
-            icon = function(item)
-              if item.file and item.icon == "file" or item.icon == "directory" then
-                return M.icon(item.file, item.icon)
-              end
-              return { item.icon, width = 2, hl = "icon" }
-            end,
-            footer = { "%s", align = "center" },
-            header = { "%s", align = "center" },
-            file = function(item, ctx)
-              local fname = vim.fn.fnamemodify(item.file, ":~")
-              fname = ctx.width and #fname > ctx.width and vim.fn.pathshorten(fname) or fname
-              if #fname > ctx.width then
-                local dir = vim.fn.fnamemodify(fname, ":h")
-                local file = vim.fn.fnamemodify(fname, ":t")
-                if dir and file then
-                  file = file:sub(-(ctx.width - #dir - 2))
-                  fname = dir .. "/…" .. file
-                end
-              end
-              local dir, file = fname:match "^(.*)/(.+)$"
-              return dir and { { dir .. "/", hl = "dir" }, { file, hl = "file" } } or { { fname, hl = "file" } }
-            end,
-          },
-          sections = {
-            { section = "header" },
-            { section = "keys",   gap = 1, padding = 1 },
-            { section = "startup" },
-            {
-              section = "terminal",
-              cmd = "ascii-image-converter --width 30 --height 30 ./logo.png -C -c",
-              random = 10,
-              pane = 2,
-              indent = 4,
-              height = 30,
-            },
-          },
-        },
-      },
-      indent = { enabled = true },
-      input = { enabled = true },
-      notifier = {
-        enabled = true,
-        timeout = 3000,
-      },
-      quickfile = { enabled = true },
-      scroll = { enabled = true },
-      statuscolumn = { enabled = true },
-      words = { enabled = true },
-      styles = {
-        notification = {
-          wo = { wrap = true },
-        },
-      },
-    },
-  },
+
   {
     "tiagovla/tokyodark.nvim",
     opts = {
@@ -254,7 +144,13 @@ return {
         --   vim.lsp.inlay_hint(bufnr, true)
         -- end
       end
-
+      -- Solidity Language Configuration
+      lspconfig.solidity_ls.setup({
+        on_attach = on_attach, -- probably you will need this.
+        capabilities = capabilities,
+        filetypes = { "solidity" },
+        root_dir = lspconfig.util.root_pattern("hardhat.config.*", ".git")
+      })
       -- TypeScript/JavaScript configuration
       lspconfig.ts_ls.setup {
         capabilities = capabilities,
@@ -460,34 +356,34 @@ return {
       vim.g.copilot_tab_fallback = ""
     end,
   },
-  {
-    "andweeb/presence.nvim",
-    event = "VeryLazy",
-    priority = 950,
-    config = function()
-      vim.g.presence_debug = true
-
-      local presence = require "presence"
-
-      presence.setup {
-        auto_update = true,
-        neovim_image_text = "neovim",
-        main_image = "neovim",
-        debounce_timeout = 10,
-        log_level = "debug",
-        enable_line_number = true,
-        editing_text = "Editing %s",
-        file_explorer_text = "Browsing %s",
-        git_commit_text = "Committing changes",
-        plugin_manager_text = "Managing plugins",
-        reading_text = "Reading %s",
-        workspace_text = "Working on %s",
-        client_id = "793271441293967371",
-        line_number_text = "Line %s out of %s",
-      }
-      presence:update()
-    end,
-  },
+  -- {
+  -- "andweeb/presence.nvim",
+  -- event = "VeryLazy",
+  -- priority = 950,
+  -- config = function()
+  --   vim.g.presence_debug = true
+  --
+  --   local presence = require "presence"
+  --
+  --   presence.setup {
+  --     auto_update = true,
+  --     neovim_image_text = "neovim",
+  --     main_image = "neovim",
+  --     debounce_timeout = 10,
+  --     log_level = "debug",
+  --     enable_line_number = true,
+  --     editing_text = "Editing %s",
+  --     file_explorer_text = "Browsing %s",
+  --     git_commit_text = "Committing changes",
+  --     plugin_manager_text = "Managing plugins",
+  --     reading_text = "Reading %s",
+  --     workspace_text = "Working on %s",
+  --     client_id = "793271441293967371",
+  --     line_number_text = "Line %s out of %s",
+  --   }
+  --   presence:update()
+  -- end,
+  -- },
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -536,7 +432,6 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       local harpoon = require "harpoon"
-
       -- REQUIRED
       harpoon:setup {
         settings = {
@@ -547,8 +442,7 @@ return {
           end,
         },
       }
-
-      -- vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+      vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
       --
       -- -- Navigation
       -- vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
@@ -574,4 +468,47 @@ return {
   },
 
   { "mfussenegger/nvim-dap" },
+  { "mfussenegger/nvim-jdtls" },
+
+  -- Code Snippte plugin
+  { "rafamadriz/friendly-snippets" },
+  {
+
+    "L3MON4D3/LuaSnip",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    require("luasnip.loaders.from_vscode").load { include = { "python", "JavaScript", "Java", "HTML" } }, -- Load only python snippets
+
+    -- follow latest release.
+    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    -- install jsregexp (optional!).
+    build = "make install_jsregexp",
+  },
+  {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      local screen_width = vim.o.columns
+      local screen_height = vim.o.lines
+
+      local window_width = 50
+      local window_height = 20
+
+      require("nvim-tree").setup {
+        view = {
+          float = {
+            enable = true,
+            open_win_config = {
+              relative = "editor",
+              border = "rounded",
+              width = window_width,
+              height = window_height,
+              row = (screen_height - window_height) / 2, -- Center vertically
+              col = (screen_width - window_width) / 2,   -- Center horizontally
+            },
+          },
+        },
+      }
+    end
+  }
+  ,
 }

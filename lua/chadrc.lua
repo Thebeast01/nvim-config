@@ -11,18 +11,14 @@ M.base46 = {
   hl_override = {
     Comment = { italic = true },
     ["@comment"] = { italic = true },
-    ["@variable"] = { italic = true },
-    ["@function"] = { italic = true },
-    ["@parameter"] = { italic = true },
-    ["@method"] = { italic = true },
-    ["@property"] = { italic = true },
-    ["@field"] = { italic = true },
-    ["@type"] = { italic = true },
-    ["@return"] = { italic = true },
-    ["@throws"] = { italic = true },
-    ["@constructor"] = { italic = true },
-    ["@deprecated"] = { italic = true },
   },
+}
+
+M.nvdash = { load_on_startup = true }
+M.ui = {
+  tabufline = {
+    lazyload = false
+  }
 }
 
 return M
