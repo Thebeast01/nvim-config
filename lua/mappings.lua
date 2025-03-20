@@ -1,13 +1,12 @@
 require "nvchad.mappings"
 
 
--- Add yours here
+-- Add local here
 local map = vim.keymap.set
 local harpoon = require("harpoon")
 local harpoon_ui = require("harpoon.ui")
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
-
 -- Copilot Accept Suggestion
 map("i", "<C-p>", "copilot#Accept('<CR>')", { noremap = true, silent = true, expr = true, replace_keycodes = false })
 
@@ -61,7 +60,11 @@ map("n", "<leader>tt", function()
   vim.opt.showtabline = vim.opt.showtabline:get() == 0 and 2 or 0
 end, { desc = "Toggle tabline visibility" })
 
-
+-- For pasting something over something  without loosing the copied text
+vim.keymap.set("x", "<leader>p", "\"_dP", { noremap = true, silent = true })
+-- To move selected line up or down
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
 -- CMP Autocompletion Setup
 local cmp = require("cmp")
 cmp.setup {

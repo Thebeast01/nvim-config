@@ -47,12 +47,21 @@ return {
   -- Obsidian Config end here
 
   { "rose-pine/neovim",      name = "rose-pine" },
+  { "rebelot/kanagawa.nvim", name = "kanagawa" },
+  {
+    "vague2k/vague.nvim",
+    config = function()
+      require("vague").setup({
+
+      })
+    end
+  },
   -- {
   --   'MeanderingProgrammer/render-markdown.nvim',
   --   dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
   --   opts = {},
   -- },
-  { "ellisonleao/glow.nvim", config = true,     cmd = "Glow" },
+  { "ellisonleao/glow.nvim",       config = true, cmd = "Glow" },
 
   {
     "tiagovla/tokyodark.nvim",

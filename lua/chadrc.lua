@@ -11,10 +11,19 @@ M.base46 = {
   hl_override = {
     Comment = { italic = true },
     ["@comment"] = { italic = true },
+    String = {
+      italic = true,
+
+    },
+    ['@string'] = {
+      italic = true,
+    },
   },
 }
 
+
 M.nvdash = { load_on_startup = true }
+
 M.ui = {
   tabufline = {
     lazyload = false
