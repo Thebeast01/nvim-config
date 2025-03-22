@@ -94,3 +94,13 @@ cmp.setup {
     },
   },
 }
+
+-- Function to adjust font size in Kitty
+local function adjust_font_size(amount)
+  local kitty_cmd = string.format("<Cmd>silent !kitty @ set-font-size %d<CR>", amount)
+  vim.system(kitty_cmd, false)
+end
+
+-- Keybinds for increasing and decreasing font size
+map("n", "<C-+>", function() adjust_font_size(1) end, { noremap = true, silent = true })
+map("n", "<C-->", function() adjust_font_size(-1) end, { noremap = true, silent = true })
