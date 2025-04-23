@@ -1,9 +1,19 @@
 return {
   -- Try to learn about vim fugitive
+
   {
     "stevearc/conform.nvim",
     event = "BufWritePre", -- uncomment for format on save
     opts = require "configs.conform",
+  },
+  {
+    "tpope/vim-fugitive",
+  },
+  {
+    "rust-lang/rust.vim"
+  },
+  {
+    "simrat39/rust-tools.nvim"
   },
   -- Surround Plugin tpope/vim-surround
   {
@@ -16,34 +26,29 @@ return {
   },
   -- Obsidian.nvim config  start
 
-  "epwalsh/obsidian.nvim",
-  version = "*", -- recommended, use latest release instead of latest commit
-  lazy = true,
-  ft = "markdown",
-  -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-  -- event = {
-  --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-  --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
-  --   -- refer to `:h file-pattern` for more examples
-  --   "BufReadPre path/to/my-vault/*.md",
-  --   "BufNewFile path/to/my-vault/*.md",
-  -- },
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-  },
-  opts = {
-    workspaces = {
-      {
-        name = "personal",
-        path = "~/vaults/personal",
+  {
+    "epwalsh/obsidian.nvim",
+    lazy = true,
+    ft = "markdown",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    opts = {
+      workspaces = {
+        {
+          name = "rust-notes",
+          path = "~/Desktop/rust/Notes-Rust",
+        },
+        {
+          name = "Todos",
+          path = "~/Desktop/todo",
+        },
       },
-      {
-        name = "work",
-        path = "~/vaults/work",
+      ui = {
+        enable = true,
       },
     },
   },
-
   -- Obsidian Config end here
 
   { "rose-pine/neovim",      name = "rose-pine" },
@@ -230,6 +235,14 @@ return {
       lspconfig.prismals.setup {
         capabilities = capabilities,
         on_attach = on_attach,
+        filetypes = { "prisma" },
+        settings = {
+          prisma = {
+            enableFormatter = true,
+            autoFormat = true,
+          },
+        },
+
       }
 
       -- HTML configuration
@@ -331,8 +344,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     config = function()
       require("nvim-treesitter.configs").setup {
-
-        ensure_installed = { "lua", "vim", "vimdoc", "javascript", "html" },
+        ensure_installed = { "lua", "vim", "vimdoc", "javascript", "html", "bash", "css", "typescript", "tsx", "json", "java", "go", "markdown", "markdown_inline", "prisma" },
         sync_install = false,
         auto_install = true,
         highlight = {
@@ -365,34 +377,6 @@ return {
       vim.g.copilot_tab_fallback = ""
     end,
   },
-  -- {
-  -- "andweeb/presence.nvim",
-  -- event = "VeryLazy",
-  -- priority = 950,
-  -- config = function()
-  --   vim.g.presence_debug = true
-  --
-  --   local presence = require "presence"
-  --
-  --   presence.setup {
-  --     auto_update = true,
-  --     neovim_image_text = "neovim",
-  --     main_image = "neovim",
-  --     debounce_timeout = 10,
-  --     log_level = "debug",
-  --     enable_line_number = true,
-  --     editing_text = "Editing %s",
-  --     file_explorer_text = "Browsing %s",
-  --     git_commit_text = "Committing changes",
-  --     plugin_manager_text = "Managing plugins",
-  --     reading_text = "Reading %s",
-  --     workspace_text = "Working on %s",
-  --     client_id = "793271441293967371",
-  --     line_number_text = "Line %s out of %s",
-  --   }
-  --   presence:update()
-  -- end,
-  -- },
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -481,38 +465,75 @@ return {
 
   -- Code Snippte plugin
   { "rafamadriz/friendly-snippets" },
+
   {
-
     "L3MON4D3/LuaSnip",
+    version = "v2.*",                -- Use latest v2 release
+    build = "make install_jsregexp", -- Optional: for better snippet parsing
     dependencies = { "rafamadriz/friendly-snippets" },
-    require("luasnip.loaders.from_vscode").load { include = { "python", "JavaScript", "Java", "HTML" } }, -- Load only python snippets
+    config = function()
+      local snip = require("luasnip")
+      local s = snip.snippet
+      local t = snip.text_node
+      local i = snip.insert_node
 
-    -- follow latest release.
-    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-    -- install jsregexp (optional!).
-    build = "make install_jsregexp",
+      -- Load only selected snippets from friendly-snippets
+      require("luasnip.loaders.from_vscode").load {
+        include = { "python", "javascript", "java", "html", "markdown" },
+      }
+
+      -- Custom HTML snippet
+      snip.add_snippets("html", {
+        s("htmls", {
+          t("<!DOCTYPE html>"),
+          t("<html lang=\"en\">"),
+          t("<head>"),
+          t("  <meta charset=\"UTF-8\">"),
+          t("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"),
+          t("  <title>"), i(1, "Document"), t("</title>"),
+          t("</head>"),
+          t("<body>"),
+          i(0),
+          t("</body>"),
+          t("</html>"),
+        }),
+      })
+      snip.add_snippets("lua", {
+        s("hello", {
+          t("print(\"Hello, World!\")"),
+        })
+      })
+    end,
   },
+
   {
     "nvim-tree/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       local screen_width = vim.o.columns
       local screen_height = vim.o.lines
-
       local window_width = 50
       local window_height = 20
 
       require("nvim-tree").setup {
+        filters = {
+          dotfiles = false,
+          custom = {},
+        },
+        git = {
+          enable = true,
+          ignore = false,
+        },
         view = {
           float = {
             enable = true,
             open_win_config = {
               relative = "editor",
-              border = "rounded",
+              border = "none",
               width = window_width,
               height = window_height,
-              row = (screen_height - window_height) / 2, -- Center vertically
-              col = (screen_width - window_width) / 2,   -- Center horizontally
+              row = 1,                  -- Center vertically
+              col = (screen_width - 0), -- Center horizontally
             },
           },
         },
@@ -520,4 +541,10 @@ return {
     end
   }
   ,
+  -- Luasnip-Markdown-snippets.nvim
+  {
+    "LukasKorotaj/Luasnip-Markdown-snippets.nvim",
+    dependencies = { "L3MON4D3/LuaSnip" },
+    config = true,
+  },
 }

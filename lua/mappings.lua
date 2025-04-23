@@ -55,11 +55,21 @@ end, { desc = "Clear Harpoon list" })
 -- Markdown Preview
 map("n", "<leader>mp", ":MarkdownPreview<CR>", { noremap = true, silent = true })
 
+
+-- Toggle checkbox in obsidian.nvim
+
+-- Toggle checkbox in obsidian.nvim
+map("n", "<leader>cc", function()
+  require("obsidian").util.toggle_checkbox()
+end, { desc = "Toggle checkbox" })
+
+
 -- Toggle Tabline
+
 map("n", "<leader>tt", function()
   vim.opt.showtabline = vim.opt.showtabline:get() == 0 and 2 or 0
 end, { desc = "Toggle tabline visibility" })
-
+--
 -- For pasting something over something  without loosing the copied text
 vim.keymap.set("x", "<leader>p", "\"_dP", { noremap = true, silent = true })
 -- To move selected line up or down
@@ -98,9 +108,16 @@ cmp.setup {
 -- Function to adjust font size in Kitty
 local function adjust_font_size(amount)
   local kitty_cmd = string.format("<Cmd>silent !kitty @ set-font-size %d<CR>", amount)
-  vim.system(kitty_cmd, false)
+  -- vim.system(kitty_cmd, false)
 end
 
 -- Keybinds for increasing and decreasing font size
 map("n", "<C-+>", function() adjust_font_size(1) end, { noremap = true, silent = true })
 map("n", "<C-->", function() adjust_font_size(-1) end, { noremap = true, silent = true })
+-- Create New file
+map("n", "<leader>nf", function()
+  local fname = vim.fn.input("New file: ")
+  if fname ~= "" then
+    vim.cmd("edit " .. fname)
+  end
+end, { desc = "Create new file" })
