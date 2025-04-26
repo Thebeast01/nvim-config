@@ -1,5 +1,28 @@
 return {
   -- Try to learn about vim fugitive
+  {
+    -- Plugin Noice.nvim
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      message = {
+        enabled = false,
+      },
+      notify = {
+        enabled = false,
+      },
+      popupmenu = {
+        enabled = false,
+      },
+      cmdline = {
+        enabled = true,
+      },
+    },
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
+  },
 
   {
     "stevearc/conform.nvim",
@@ -313,6 +336,21 @@ return {
           },
         },
       }
+      -- python
+      lspconfig.pyright.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          python = {
+            analysis = {
+              typeCheckingMode = "basic",
+              autoImportCompletions = true,
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+            },
+          },
+        },
+      }
     end,
   },
   {
@@ -344,7 +382,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     config = function()
       require("nvim-treesitter.configs").setup {
-        ensure_installed = { "lua", "vim", "vimdoc", "javascript", "html", "bash", "css", "typescript", "tsx", "json", "java", "go", "markdown", "markdown_inline", "prisma" },
+        ensure_installed = { "lua", "vim", "vimdoc", "javascript", "html", "bash", "css", "typescript", "tsx", "json", "java", "go", "markdown", "markdown_inline", "prisma", "python" },
         sync_install = false,
         auto_install = true,
         highlight = {
