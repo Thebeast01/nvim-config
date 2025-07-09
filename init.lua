@@ -1,3 +1,8 @@
+local todo = require("floatingTodo")
+todo.setup({
+  target_file = "~/Desktop/Notes/note.md"
+
+})
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
 vim.opt.cmdheight = 0

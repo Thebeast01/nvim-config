@@ -1,6 +1,4 @@
 require "nvchad.mappings"
-
-
 -- Add local here
 local map = vim.keymap.set
 local harpoon = require("harpoon")
@@ -12,7 +10,7 @@ map("i", "<C-p>", "copilot#Accept('<CR>')", { noremap = true, silent = true, exp
 
 -- Git Blame Toggle
 map("n", "<leader>gt", ":Gitsigns toggle_current_line_blame<CR>", { noremap = true, silent = true })
-
+map("n", "<leader>td", ":Td<CR>", { noremap = true, silent = true })
 -- Toggle Relative Numbers
 map("n", "<leader>r", ":set relativenumber!<CR>", { noremap = true, silent = true })
 

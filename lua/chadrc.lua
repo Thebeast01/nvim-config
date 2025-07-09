@@ -2,11 +2,12 @@
 -- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
 -- Please read that file to know all available options :(
 ---@type ChadrcConfig
+
 local M = {}
 M.base46 = {
   theme = "rosepine",
   transparency = true,
-  theme_toggle = { "onedark", "one_light" },
+  theme_toggle = { "aquarium", "everblush" },
   hl_override = {
     Comment = { italic = true },
     ["@comment"] = { italic = true },
@@ -25,31 +26,30 @@ M.base46 = {
   },
 }
 
-
 M.nvdash = { load_on_startup = true }
 M.ui = {
   tabufline = {
-    enabled = true,
-    show_filename_only = true,
+    enabled = false,
+    lazyload = true,
+    order = { "treeOffset", "buffers", "tabs", "btns" },
+    modules = nil,
+    bufwidth = 21,
   },
-
   statusline = {
-    theme = "minimal",
+    theme = "vscode",
     separator_style = "arrow",
   },
-  theme_toggle = { "rosepine", "everblush" },
   cmp = {
     style = "default",
-    border_color = "rosepine",
-    kind_icon = "rosepine",
-    kind_text = "rosepine",
+    border_color = "aquarium",
+    kind_icon = "aquarium",
+    kind_text = "aquarium",
   },
   telescope = {
     style = "borderless",
-    border_color = "rosepine",
-    results_color = "rosepine",
-    preview_color = "rosepine",
+    border_color = "aquarium",
+    results_color = "aquarium",
+    preview_color = "aquarium",
   },
 }
-
 return M

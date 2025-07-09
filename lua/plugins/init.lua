@@ -1,5 +1,6 @@
 return {
   -- Try to learn about vim fugitive
+  { "AstroNvim/astrotheme" },
   {
     -- Plugin Noice.nvim
     "folke/noice.nvim",
@@ -16,6 +17,9 @@ return {
       },
       cmdline = {
         enabled = true,
+      },
+      popups = {
+        enabled = false,
       },
     },
     dependencies = {
@@ -47,32 +51,6 @@ return {
       require("nvim-surround").setup()
     end,
   },
-  -- Obsidian.nvim config  start
-
-  {
-    "epwalsh/obsidian.nvim",
-    lazy = true,
-    ft = "markdown",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    opts = {
-      workspaces = {
-        {
-          name = "rust-notes",
-          path = "~/Desktop/rust/Notes-Rust",
-        },
-        {
-          name = "Todos",
-          path = "~/Desktop/todo",
-        },
-      },
-      ui = {
-        enable = true,
-      },
-    },
-  },
-  -- Obsidian Config end here
 
   { "rose-pine/neovim",      name = "rose-pine" },
   { "rebelot/kanagawa.nvim", name = "kanagawa" },
@@ -517,7 +495,7 @@ return {
 
       -- Load only selected snippets from friendly-snippets
       require("luasnip.loaders.from_vscode").load {
-        include = { "python", "javascript", "java", "html", "markdown" },
+        include = { "python", "javascript", "java", "html", "markdown", "typescriptreact" },
       }
 
       -- Custom HTML snippet
@@ -549,11 +527,19 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       local screen_width = vim.o.columns
-      local screen_height = vim.o.lines
       local window_width = 50
-      local window_height = 20
+      local window_height = vim.o.lines - 2
 
       require("nvim-tree").setup {
+        actions = {
+          remove_file = {
+            close_window = true,
+            trash = {
+              cmd             = "trash",
+              require_confirm = true,
+            },
+          },
+        },
         filters = {
           dotfiles = false,
           custom = {},
