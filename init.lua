@@ -1,20 +1,23 @@
-local todo = require("floatingTodo")
-todo.setup({
-  target_file = "~/Desktop/Notes/note.md"
-
-})
+vim.opt.swapfile = false
+vim.opt.scrolloff = 10
+vim.opt.sidescrolloff = 10
+vim.opt.relativenumber = true
+-- vim.opt.columns = 170
+-- vim.opt.linebreak = true
+-- vim.opt.wrap = true
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
 vim.opt.cmdheight = 0
-
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "nvim_treesitter#foldexpr()" -- Treesitter-based folding
+vim.o.foldlevel = 99                          -- keep folds open by default
+vim.o.foldenable = true
 -- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
-
 if not vim.uv.fs_stat(lazypath) then
   local repo = "https://github.com/folke/lazy.nvim.git"
   vim.fn.system { "git", "clone", "--filter=blob:none", repo, "--branch=stable", lazypath }
 end
-
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function()

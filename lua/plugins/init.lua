@@ -1,6 +1,66 @@
 return {
-  -- Try to learn about vim fugitive
-  { "AstroNvim/astrotheme" },
+
+  -- PASSED: This is a passed test
+  -- FIXME: Try to learn about vim fugitive
+  -- BUG : Fix the issue with the plugin not loading correctly
+  -- ISSUE: The plugin is not working as expected
+  -- TODO: Add more plugins for better development experience
+  -- HACK: This is a temporary solution
+  -- WARN : This is a warning message
+  -- INFO: Thisis infor
+  -- PERFORMANCE: This is a performance issue
+  -- TESTING : Thisis a testing message
+
+  {
+    "nvim-telescope/telescope-media-files.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").setup {
+        defaults = {
+          layout_strategy = 'horizontally',
+          layout_config = { height = 0.95 },
+        },
+        extensions = {
+          media_files = {
+            filetypes = { "png", "jpg", "jpeg", "webp", "gif" },
+            find_cmd = "rg" -- or "fd"
+          }
+        }
+      }
+      require("telescope").load_extension("media_files")
+    end,
+  },
+
+
+  {
+    "folke/todo-comments.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("todo-comments").setup {
+        signs = true,
+        keywords = {
+          FIX    = { icon = "", color = "error", alt = { "FIXME", "BUG", "ISSUE" } },
+          TODO   = { icon = "", color = "info" },
+          HACK   = { icon = "", color = "warning" },
+          WARN   = { icon = "", color = "warning", alt = { "WARNING" } },
+          PERF   = { icon = "", color = "hint", alt = { "OPTIM", "PERFORMANCE" } },
+          NOTE   = { icon = "", color = "info", alt = { "INFO" } },
+          TEST   = { icon = "⏲", color = "test", alt = { "TESTING", "FAILED" } },
+          PASSED = { icon = "✔ ", color = "success", alt = { "PASSED" } },
+        },
+
+        colors = {
+          error   = { "DiagnosticError", "ErrorMsg", "#DD0303" },  -- rose-pine "love"
+          warning = { "DiagnosticWarn", "WarningMsg", "#f6c177" }, -- rose-pine "gold"
+          info    = { "DiagnosticInfo", "#31748f" },               -- rose-pine "pine"
+          hint    = { "DiagnosticHint", "#c4a7e7" },               -- rose-pine "iris"
+          test    = { "Identifier", "#ebbcba" },                   -- rose-pine "rose"
+          success = { "String", "#9ccfd8" },                       -- rose-pine "foam" (green/teal)
+        },
+      }
+    end,
+  },
   {
     -- Plugin Noice.nvim
     "folke/noice.nvim",
@@ -34,9 +94,6 @@ return {
     opts = require "configs.conform",
   },
   {
-    "tpope/vim-fugitive",
-  },
-  {
     "rust-lang/rust.vim"
   },
   {
@@ -52,67 +109,10 @@ return {
     end,
   },
 
-  { "rose-pine/neovim",      name = "rose-pine" },
-  { "rebelot/kanagawa.nvim", name = "kanagawa" },
-  {
-    "vague2k/vague.nvim",
-    config = function()
-      require("vague").setup({
+  { "rose-pine/neovim",         name = "rose-pine" },
+  { "ramojus/mellifluous.nvim", name = "mellifluous" },
 
-      })
-    end
-  },
-  -- {
-  --   'MeanderingProgrammer/render-markdown.nvim',
-  --   dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-  --   opts = {},
-  -- },
-  { "ellisonleao/glow.nvim",       config = true, cmd = "Glow" },
 
-  {
-    "tiagovla/tokyodark.nvim",
-    opts = {
-      -- custom options here
-      styles = {
-        comments = { italic = true },
-        keywords = { italic = true },
-        transparent_background = true,
-      },
-    },
-    config = function(_, opts)
-      require("tokyodark").setup(opts) -- calling setup is optional
-      vim.cmd [[colorscheme tokyodark]]
-    end,
-  },
-  {
-    "rebelot/kanagawa.nvim",
-    config = function()
-      require("kanagawa").setup {
-        compile = false,  -- enable compiling the colorscheme
-        undercurl = true, -- enable undercurls
-        commentStyle = { italic = true },
-        functionStyle = {},
-        keywordStyle = { italic = true },
-        statementStyle = { bold = true },
-        typeStyle = {},
-        transparent = false,   -- do not set background color
-        dimInactive = false,   -- dim inactive window `:h hl-NormalNC`
-        terminalColors = true, -- define vim.g.terminal_color_{0,17}
-        colors = {             -- add/modify theme and palette colors
-          palette = {},
-          theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
-        },
-        overrides = function(colors) -- add/modify highlights
-          return {}
-        end,
-        theme = "wave",  -- Load "wave" theme when 'background' option is not set
-        background = {   -- map the value of 'background' option to a theme
-          dark = "wave", -- try "dragon" !
-          light = "lotus",
-        },
-      }
-    end,
-  },
   {
 
     "neovim/nvim-lspconfig",
@@ -344,19 +344,6 @@ return {
     ft = "prisma",
   },
   {
-    "iamcco/markdown-preview.nvim",
-    build = "cd app && yarn install",
-    init = function()
-      vim.g.mkdp_filetypes = { "markdown" }
-    end,
-    ft = { "markdown" },
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-  },
-  {
-    "tpope/vim-fugitive",
-  },
-
-  {
     "nvim-treesitter/nvim-treesitter",
     config = function()
       require("nvim-treesitter.configs").setup {
@@ -367,6 +354,8 @@ return {
           enable = true,
           additional_vim_regex_highlighting = false,
         },
+        ignore_install = {},
+        modules = {}
       }
     end,
   },
@@ -384,15 +373,16 @@ return {
     end,
   },
 
-  {
-    "github/copilot.vim",
-    lazy = false,
-    config = function()
-      vim.g.copilot_no_tab_map = true
-      vim.g.copilot_assume_mapped = true
-      vim.g.copilot_tab_fallback = ""
-    end,
-  },
+  -- NOTE: Github copilot is disabled for now
+  -- {
+  --   "github/copilot.vim",
+  --   lazy = false,
+  --   config = function()
+  --     vim.g.copilot_no_tab_map = true
+  --     vim.g.copilot_assume_mapped = true
+  --     vim.g.copilot_tab_fallback = ""
+  --   end,
+  -- },
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -424,17 +414,7 @@ return {
       }
     end,
   },
-  {
-    "derektata/lorem.nvim",
-    config = function()
-      local lorem = require "lorem"
-      lorem.setup {
-        default_word_count = 10,
-        default_sentence_count = 5,
-        default_paragraph_count = 3,
-      }
-    end,
-  },
+
   {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
@@ -452,36 +432,10 @@ return {
         },
       }
       vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
-      --
-      -- -- Navigation
-      -- vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
-      -- vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
-      -- vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
-      -- vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
-      --
-      -- -- Additional useful keymaps
-      -- -- Navigate to next/previous files in list
-      -- vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
-      -- vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
-      --
-      -- -- Optional: Display length of Harpoon list
-      -- vim.keymap.set("n", "<leader>hl", function()
-      --     print(harpoon:list():length())
-      -- end)
-
-      -- Optional: Clear all marks
-      -- vim.keymap.set("n", "<leader>hc", function()
-      --     harpoon:list():clear()
-      -- end)
     end,
   },
-
-  { "mfussenegger/nvim-dap" },
-  { "mfussenegger/nvim-jdtls" },
-
   -- Code Snippte plugin
   { "rafamadriz/friendly-snippets" },
-
   {
     "L3MON4D3/LuaSnip",
     version = "v2.*",                -- Use latest v2 release
@@ -548,6 +502,18 @@ return {
           enable = true,
           ignore = false,
         },
+        renderer = {
+          highlight_git = true,
+          highlight_opened_files = "all",
+          indent_markers = {
+            enable = true,
+          },
+          icons = {
+            show = {
+              git = true,
+            },
+          },
+        },
         view = {
           float = {
             enable = true,
@@ -571,4 +537,7 @@ return {
     dependencies = { "L3MON4D3/LuaSnip" },
     config = true,
   },
+
+
+
 }

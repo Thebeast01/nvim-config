@@ -1,13 +1,13 @@
 -- This file needs to have same structure as nvconfig.lua
 -- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
 -- Please read that file to know all available options :(
----@type ChadrcConfig
 
+---@type ChadrcConfig
 local M = {}
 M.base46 = {
-  theme = "rosepine",
+  theme = "melange",
   transparency = true,
-  theme_toggle = { "aquarium", "everblush" },
+  theme_toggle = { "melange", "rosepine-dawn" },
   hl_override = {
     Comment = { italic = true },
     ["@comment"] = { italic = true },
@@ -22,11 +22,38 @@ M.base46 = {
     },
     ['@function'] = {
       italic = true,
-    }
+    },
+    CursorLineNr = {
+      fg = "#FFA555"
+
+    },
+    ["@variable"] = {
+      italic = true,
+    },
+
   },
 }
 
-M.nvdash = { load_on_startup = true }
+
+M.nvdash = {
+  load_on_startup = true,
+
+  header = {
+    " ███████████  ██████████   █████████    █████████  ███████████",
+    "░░███░░░░░███░░███░░░░░█  ███░░░░░███  ███░░░░░███░█░░░███░░░█",
+    " ░███    ░███ ░███  █ ░  ░███    ░███ ░███    ░░░ ░   ░███  ░ ",
+    " ░██████████  ░██████    ░███████████ ░░█████████     ░███    ",
+    " ░███░░░░░███ ░███░░█    ░███░░░░░███  ░░░░░░░░███    ░███    ",
+    " ░███    ░███ ░███ ░   █ ░███    ░███  ███    ░███    ░███    ",
+    " ███████████  ██████████ █████   █████░░█████████     █████   ",
+    "░░░░░░░░░░░  ░░░░░░░░░░ ░░░░░   ░░░░░  ░░░░░░░░░     ░░░░░    ",
+
+    "Welcome Beast to Your Coding Setup! 🔥",
+    "                                      ",
+    "                                      ",
+  },
+}
+
 M.ui = {
   tabufline = {
     enabled = false,
@@ -36,7 +63,7 @@ M.ui = {
     bufwidth = 21,
   },
   statusline = {
-    theme = "vscode",
+    theme = "default",
     separator_style = "arrow",
   },
   cmp = {
@@ -46,10 +73,10 @@ M.ui = {
     kind_text = "aquarium",
   },
   telescope = {
-    style = "borderless",
-    border_color = "aquarium",
-    results_color = "aquarium",
-    preview_color = "aquarium",
+    style = "bordered",
+    results_color = "rosepine",
+    preview_color = "rosepine",
   },
 }
+
 return M

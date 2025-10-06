@@ -67,7 +67,13 @@ end, { desc = "Toggle checkbox" })
 map("n", "<leader>tt", function()
   vim.opt.showtabline = vim.opt.showtabline:get() == 0 and 2 or 0
 end, { desc = "Toggle tabline visibility" })
---
+
+-- Telescope media_files keymap
+vim.keymap.set("n", "<leader>fi", "<cmd>Telescope media_files<CR>", {
+  noremap = true,
+  silent = true,
+  desc = "Find images and media files",
+})
 -- For pasting something over something  without loosing the copied text
 vim.keymap.set("x", "<leader>p", "\"_dP", { noremap = true, silent = true })
 -- To move selected line up or down
@@ -119,3 +125,9 @@ map("n", "<leader>nf", function()
     vim.cmd("edit " .. fname)
   end
 end, { desc = "Create new file" })
+
+-- za -> Toggle fold
+-- zc -> Close fold
+-- zo -> Open fold
+-- zM -> Close all folds
+-- zR -> Open all folds
