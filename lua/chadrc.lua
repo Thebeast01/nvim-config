@@ -5,9 +5,9 @@
 ---@type ChadrcConfig
 local M = {}
 M.base46 = {
-  theme = "melange",
+  theme = "rosepine",
   transparency = true,
-  theme_toggle = { "melange", "rosepine-dawn" },
+  theme_toggle = { "rosepine", "rosepine-dawn" },
   hl_override = {
     Comment = { italic = true },
     ["@comment"] = { italic = true },
@@ -80,3 +80,9 @@ M.ui = {
 }
 
 return M
+
+
+
+
+
+

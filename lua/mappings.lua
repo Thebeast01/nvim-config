@@ -8,6 +8,7 @@ map("i", "jk", "<ESC>")
 -- Copilot Accept Suggestion
 map("i", "<C-p>", "copilot#Accept('<CR>')", { noremap = true, silent = true, expr = true, replace_keycodes = false })
 
+map("x", "<leader>p", '"_dP', { desc = "Paste without overwriting register" })
 -- Git Blame Toggle
 map("n", "<leader>gt", ":Gitsigns toggle_current_line_blame<CR>", { noremap = true, silent = true })
 map("n", "<leader>td", ":Td<CR>", { noremap = true, silent = true })
@@ -38,10 +39,10 @@ map("n", "<leader>4", function()
 end)
 
 -- Harpoon: Previous & Next
-map("n", "<A-l>", function()
+map("n", "<leader>mn", function()
   harpoon:list():prev()
 end, { desc = "Previous Harpoon file" })
-map("n", "<A-k>", function()
+map("n", "<leader>mf", function()
   harpoon:list():next()
 end, { desc = "Next Harpoon file" })
 
@@ -131,3 +132,4 @@ end, { desc = "Create new file" })
 -- zo -> Open fold
 -- zM -> Close all folds
 -- zR -> Open all folds
+--
