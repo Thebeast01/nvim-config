@@ -5,84 +5,100 @@
 ---@type ChadrcConfig
 local M = {}
 M.base46 = {
-  theme = "rosepine",
-  transparency = true,
-  theme_toggle = { "rosepine", "rosepine-dawn" },
-  hl_override = {
-    Comment = { italic = true },
-    ["@comment"] = { italic = true },
-    String = {
-      italic = true,
-    },
-    ['@string'] = {
-      italic = true,
-    },
-    Function = {
-      italic = true,
-    },
-    ['@function'] = {
-      italic = true,
-    },
-    CursorLineNr = {
-      fg = "#FFA555"
+    theme = "rosepine",
+    transparency = true,
+    theme_toggle = { "rosepine", "rosepine" },
+    hl_override = {
+        Comment = {
+            fg = "#e8a093",
+            italic = true
+        },
+        ["@comment"] = {
+            fg = "#8790b7",
+            italic = true
+        },
+        String = {
+            italic = false,
+        },
+        Variable = {
+            italic = true,
+        },
+        ['@string'] = {
+            italic = false,
+        },
+        Function = {
+            italic = true,
+        },
+        ['@function'] = {
+            italic = true,
+        },
+        CursorLineNr = {
+            fg = "#FFA555"
+        },
+        LineNr = {
+            fg = "#765e93"
+        },
+        ["@variable"] = {
+            italic = true,
+        },
 
     },
-    ["@variable"] = {
-      italic = true,
-    },
-
-  },
 }
 
 
 M.nvdash = {
-  load_on_startup = true,
+    load_on_startup = true,
 
-  header = {
-    " ███████████  ██████████   █████████    █████████  ███████████",
-    "░░███░░░░░███░░███░░░░░█  ███░░░░░███  ███░░░░░███░█░░░███░░░█",
-    " ░███    ░███ ░███  █ ░  ░███    ░███ ░███    ░░░ ░   ░███  ░ ",
-    " ░██████████  ░██████    ░███████████ ░░█████████     ░███    ",
-    " ░███░░░░░███ ░███░░█    ░███░░░░░███  ░░░░░░░░███    ░███    ",
-    " ░███    ░███ ░███ ░   █ ░███    ░███  ███    ░███    ░███    ",
-    " ███████████  ██████████ █████   █████░░█████████     █████   ",
-    "░░░░░░░░░░░  ░░░░░░░░░░ ░░░░░   ░░░░░  ░░░░░░░░░     ░░░░░    ",
+    header = {
+        " ███████████  ██████████   █████████    █████████  ███████████",
+        "░░███░░░░░███░░███░░░░░█  ███░░░░░███  ███░░░░░███░█░░░███░░░█",
+        " ░███    ░███ ░███  █ ░  ░███    ░███ ░███    ░░░ ░   ░███  ░ ",
+        " ░██████████  ░██████    ░███████████ ░░█████████     ░███    ",
+        " ░███░░░░░███ ░███░░█    ░███░░░░░███  ░░░░░░░░███    ░███    ",
+        " ░███    ░███ ░███ ░   █ ░███    ░███  ███    ░███    ░███    ",
+        " ███████████  ██████████ █████   █████░░█████████     █████   ",
+        "░░░░░░░░░░░  ░░░░░░░░░░ ░░░░░   ░░░░░  ░░░░░░░░░     ░░░░░    ",
 
-    "Welcome Beast to Your Coding Setup! 🔥",
-    "                                      ",
-    "                                      ",
-  },
+        "Welcome Beast to Your Coding Setup! 🔥",
+        "                                      ",
+        "                                      ",
+    },
 }
 
 M.ui = {
-  tabufline = {
-    enabled = false,
-    lazyload = true,
-    order = { "treeOffset", "buffers", "tabs", "btns" },
-    modules = nil,
-    bufwidth = 21,
-  },
-  statusline = {
-    theme = "default",
-    separator_style = "arrow",
-  },
-  cmp = {
-    style = "default",
-    border_color = "aquarium",
-    kind_icon = "aquarium",
-    kind_text = "aquarium",
-  },
-  telescope = {
-    style = "bordered",
-    results_color = "rosepine",
-    preview_color = "rosepine",
-  },
+    tabufline = {
+        enabled = false,
+        order = { "buffers", "tabs" },
+    },
+    statusline = {
+        theme = "vscode_colored",
+        separator_style = "arrow",
+        order = {
+            "mode",
+            "file",
+            "%=", -- push next modules to center
+            "git",
+            "diagnostics",
+            "lsp",
+            "%=", -- push remaining to right
+            "cwd",
+            "cursor",
+        },
+    },
+    cmp = {
+        style = "flat_dark", -- default/flat_light/flat_dark/atom/atom_colored
+        format_colors = {
+            tailwind = false,
+        },
+        -- border_color = "aquarium",
+        -- kind_icon = "aquarium",
+        -- kind_text = "aquarium",
+    },
+    telescope = {
+        style = "bordered",
+        results_color = "rosepine",
+        preview_color = "rosepine",
+    },
 }
 
 return M
-
-
-
-
-
-
