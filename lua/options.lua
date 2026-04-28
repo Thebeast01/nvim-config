@@ -22,6 +22,6 @@ opt.cmdheight = 0
 opt.wrap = true
 opt.linebreak = true
 opt.breakindent = true
-opt.textwidth = 80 -- visual wrap only
+opt.textwidth = 120 -- visual wrap only
 opt.formatoptions:append("t")
 -- opt.colorcolumn = "100" -- guideline only

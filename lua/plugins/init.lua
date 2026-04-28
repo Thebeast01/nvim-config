@@ -1,46 +1,154 @@
 return {
 
-    -- PASSED: This is a passed test
-    -- FIXME: Try to learn about vim fugitive
-    -- BUG : Fix the issue with the plugin not loading correctly
-    -- ISSUE: The plugin is not working as expected
-    -- TODO: Add more plugins for better development experience
-    -- HACK: This is a temporary solution
-    -- WARN : This is a warning message
-    -- INFO: Thisis infor
-    -- PERFORMANCE: This is a performance issue
-    -- TESTING : Thisis a testing message
-    -- {
-    --     'wsdjeg/calendar.nvim',
-    -- },
+{
+  "luckasRanarison/tailwind-tools.nvim",
+  name = "tailwind-tools",
+  build = ":UpdateRemotePlugins",
+  dependencies = {
+    "nvim-treesitter/nvim-treesitter",
+    "nvim-telescope/telescope.nvim", -- optional
+    "neovim/nvim-lspconfig", -- optional
+  },
+},
     {
-        "norcalli/nvim-colorizer.lua",
+        "BeastInBash/todos.nvim",
+        event = "VeryLazy", -- lazy-load on first real event
+        keys = {
+            { "<leader>td", desc = "Todo: Open UI" },
+            { "<leader>ta", desc = "Todo: Add" },
+            { "<leader>tt", desc = "Todo: Toggle" },
+            { "<leader>ts", desc = "Todo: Switch scope" },
+        },
         config = function()
-            require('colorizer').setup({
-                '*', -- Apply to all file types
-            }, {
-                mode = 'background',
-                css = true, -- Enable all CSS features
-                -- tailwind = true, -- Enable tailwind colors
+            require("todo-nvim").setup({
+                -- default scope when opening: "project" | "global"
+                default_scope = "project",
+
+                -- storage paths (optional overrides)
+                storage = {
+                    global_path      = vim.fn.stdpath("data") .. "/todo/global.json",
+                    project_filename = ".nvim/todo.json",
+                },
+
+                -- floating window proportions
+                ui = {
+                    width       = 0.8, -- fraction of editor width
+                    height      = 0.8, -- fraction of editor height
+                    border      = "rounded",
+                    split_ratio = 0.4, -- left panel fraction
+                },
+
+                -- global keymaps (outside the window)
+                keymaps = {
+                    open   = "<leader>td",
+                    add    = "<leader>ta",
+                    toggle = "<leader>tt",
+                    scope  = "<leader>ts",
+                },
+
+                -- in-panel keymaps
+                panel_keymaps = {
+                    add       = "a",
+                    delete    = "d",
+                    edit      = "e",
+                    toggle    = "<CR>",
+                    close     = "q",
+                    scope     = "s",
+                    next_prio = "p",
+                    move_down = "J",
+                    move_up   = "K",
+                    help      = "?",
+                },
+                color = {
+                    base = "#171717"
+                },
             })
-        end
+        end,
     },
+    {
+        "BeastInBash/pg-docker.nvim",
+        cmd = { "PgCreate", "PgQuickStart", "PgStop", "PgRemove", "PgLogs", "PgList", "PgLog" },
+        keys = {
+            { "<leader>pgn", "<cmd>PgCreate<cr>",     desc = "pg-docker: new container" },
+            { "<leader>pgq", "<cmd>PgQuickStart<cr>", desc = "pg-docker: quick start" },
+            { "<leader>pgs", "<cmd>PgStop<cr>",       desc = "pg-docker: stop" },
+            { "<leader>pgr", "<cmd>PgRemove<cr>",     desc = "pg-docker: remove" },
+            { "<leader>pgl", "<cmd>PgLogs<cr>",       desc = "pg-docker: logs" },
+            { "<leader>pgL", "<cmd>PgList<cr>",       desc = "pg-docker: list" },
+        },
+        opts = {},
+    },
+    {
+        "tpope/vim-dadbod",
+    },
+    {
+        'kristijanhusak/vim-dadbod-ui',
+        dependencies = {
+            { 'tpope/vim-dadbod',                     lazy = true },
+            { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true }, -- Optional
+        },
+        cmd = {
+            'DBUI',
+            'DBUIToggle',
+            'DBUIAddConnection',
+            'DBUIFindBuffer',
+        },
+        init = function()
+            -- Your DBUI configuration
+            vim.g.db_ui_use_nerd_fonts = 1
+        end,
+    },
+    {
+        "numToStr/Comment.nvim",
+        event = { "BufReadPost", "BufNewFile" },
+
+        dependencies = {
+            "JoosepAlviste/nvim-ts-context-commentstring",
+        },
+
+        config = function()
+            -- Treesitter context support (important for TSX/JSX)
+            require("ts_context_commentstring").setup({
+                enable_autocmd = false,
+            })
+
+            require("Comment").setup({
+                padding = true,
+                sticky = true,
+                ignore = nil,
+
+                toggler = {
+                    line = "gcc",  -- line comment
+                    block = "gbc", -- block comment
+                },
+
+                opleader = {
+                    line = "gc",  -- visual line comment
+                    block = "gb", -- visual block comment
+                },
+
+                extra = {
+                    above = "gcO",
+                    below = "gco",
+                    eol = "gcA",
+                },
+
+                pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+            })
+        end,
+    },
+    
     {
         "OXY2DEV/markview.nvim",
         lazy = false,
+        config = function()
+            require("markview").setup({
+                render_delay = 150,
+            })
+        end,
 
         -- Completion for `blink.cmp`
         -- dependencies = { "saghen/blink.cmp" },
-    },
-    {
-        "norcalli/nvim-colorizer.lua",
-        config = function()
-            require("colorizer").setup({
-                "*", -- Highlight in all filetypes
-                css = { rgb_fn = true, },
-                html = { names = false, },
-            })
-        end
     },
     {
         "iamcco/markdown-preview.nvim",
@@ -65,40 +173,48 @@ return {
                 extensions = {
                     media_files = {
                         filetypes = { "png", "jpg", "jpeg", "webp", "gif" },
-                        -- find_cmd = "rg" -- or "fd"
+                        find_cmd = "" -- or "fd"
                     }
                 }
             }
             require("telescope").load_extension("media_files")
         end,
     },
-    -- telescope
-    {
-
-        'nvim-telescope/telescope.nvim',
-        tag = '0.1.8',
-        dependencies = {
-            'nvim-lua/plenary.nvim',
-            {
-                'nvim-telescope/telescope-fzf-native.nvim', build = 'make'
-            }
-        },
-
-        config = function()
-            require('telescope').setup {
-                extensions = {
-                    fzf = {}
-                }
-            }
-            require('telescope').load_extension('fzf')
-            vim.keymap.set("n", "<space>tn",
-                function()
-                    require('telescope.builtin').find_files {
-                        cwd = vim.fn.stdpath("config")
-                    }
-                end)
-        end
+{
+    'nvim-telescope/telescope.nvim',
+    dependencies = {
+        'nvim-lua/plenary.nvim',
+        {
+            'nvim-telescope/telescope-fzf-native.nvim',
+            build = 'make'
+        }
     },
+
+    config = function()
+        local telescope = require('telescope')
+        local builtin = require('telescope.builtin')
+
+        telescope.setup({
+            extensions = {
+                fzf = {}
+            }
+        })
+
+        telescope.load_extension('fzf')
+
+        -- Search Neovim config files
+        vim.keymap.set("n", "<space>tn", function()
+            builtin.find_files({
+                cwd = vim.fn.stdpath("config")
+            })
+        end, { desc = "Search Neovim config" })
+
+        -- Search git tracked files
+        vim.keymap.set("n", "<C-p>", function()
+            builtin.git_files()
+        end, { desc = "Search Git files" })
+    end
+},
 
     {
         "folke/todo-comments.nvim",
@@ -201,22 +317,31 @@ return {
         "prisma/vim-prisma",
         ft = "prisma",
     },
-    {
-        "nvim-treesitter/nvim-treesitter",
-        config = function()
-            require("nvim-treesitter.configs").setup {
-                ensure_installed = { "lua", "vim", "vimdoc", "javascript", "html", "bash", "css", "typescript", "tsx", "json", "java", "go", "markdown", "markdown_inline", "prisma", "python" },
-                sync_install = false,
-                auto_install = true,
-                highlight = {
-                    enable = true,
-                    additional_vim_regex_highlighting = false,
-                },
-                ignore_install = {},
-                modules = {}
-            }
-        end,
-    },
+{
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+        -- Only use setup() if you want a custom install directory
+        -- You DON'T need it for highlighting!
+        require("nvim-treesitter").install({
+            "lua", "vim", "vimdoc", "javascript", "html",
+            "bash", "css", "typescript", "tsx", "json",
+            "java", "go", "markdown", "markdown_inline", "prisma", "python"
+        })
+
+        -- THIS is what enables highlighting now (Neovim built-in)
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = {
+                "javascript", "typescript", "tsx", "lua", "html",
+                "css", "json", "python", "go", "java", "bash",
+                "markdown", "prisma"
+            },
+            callback = function()
+                vim.treesitter.start()         -- syntax highlighting
+            end,
+        })
+    end,
+},
 
     {
         "windwp/nvim-autopairs",
@@ -426,7 +551,7 @@ return {
     },
     {
         "rachartier/tiny-inline-diagnostic.nvim",
-        event = "VeryLazy",
+        event = "VeryLazy", 
         priority = 1000,
         config = function()
             require("tiny-inline-diagnostic").setup({
@@ -450,15 +575,8 @@ return {
 
     {
         'saghen/blink.cmp',
-        -- optional: provides snippets for the snippet source
         dependencies = { 'rafamadriz/friendly-snippets' },
-
-        -- use a release tag to download pre-built binaries
         version = '1.*',
-        -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
-        -- build = 'cargo build --release',
-        -- If you use nix, you can build from source using latest nightly rust with:
-        -- build = 'nix run .#build-plugin',
 
         ---@module 'blink.cmp'
         ---@type blink.cmp.Config
@@ -506,59 +624,51 @@ return {
         build = ':Cord update',
         event = "VeryLazy",
         opts = {
-            text = {
-                editing = 'Editing ${filename}',
-                file_browser = 'Browsing files in ${tooltip}',
+            timestamp = {
+                enabled = true,
+                reset_on_idle = true,
+                reset_on_change = false,
             },
-            variables = true, -- Enable string templates
-
-        }
+            idle = {
+                enabled = true,
+                timeout = 300000, -- 5 minutes
+                text = 'Gone dark... 🌑',
+                tooltip = 'Probably debugging in my head',
+            },
+            text = {
+                -- Editing messages — rotates per file via a custom hook
+                editing = function(opts)
+                    local victims = {
+                        '⚔️ Beast Slaying bugs in ' .. opts.filename,
+                        '🔥 Beast Burning down ' .. opts.filename,
+                        '🧠 Beast Outsmarting ' .. opts.filename,
+                        '💀 Beast Murdering ' .. opts.filename,
+                        '🩸 Beast Bleeding into ' .. opts.filename,
+                        '🌀 Beast unleashing his fangs on ' .. opts.filename,
+                        '⚡ Overclocking : ' .. opts.filename,
+                        '🎯 Sniping bugs in : ' .. opts.filename,
+                        '😵‍💫 Frying Brain.exe : ' .. opts.filename,
+                    }
+                    return victims[math.random(#victims)]
+                end,
+                file_browser = function(opts)
+                    return '📂 Digging through ' .. opts.tooltip
+                end,
+                plugin_manager = '📦 Updating the arsenal...',
+                lsp_manager = '🔧 Calibrating the weapons',
+                docs = '📖 Reading the forbidden scrolls',
+                vcs = '🌿 Rewriting history in ' .. '${tooltip}',
+                notes = '📝 Plotting something...',
+                -- Workspace status
+                workspace = 'in ${workspace}',
+            },
+            buttons = {
+                {
+                    label = '👾 My GitHub',
+                    url = 'https://github.com/thebeast01', -- replace with yours
+                },
+            },
+            variables = true,
+        },
     },
-    -- {
-    --   "Isrothy/neominimap.nvim",
-    --   version = "v3.x.x",
-    --   lazy = false, -- NOTE: NO NEED to Lazy load
-    --   -- Optional. You can also set your own keybindings
-    --   keys = {
-    --     -- Global Minimap Controls
-    --     { "<leader>nm",  "<cmd>Neominimap Toggle<cr>",      desc = "Toggle global minimap" },
-    --     { "<leader>no",  "<cmd>Neominimap Enable<cr>",      desc = "Enable global minimap" },
-    --     { "<leader>nc",  "<cmd>Neominimap Disable<cr>",     desc = "Disable global minimap" },
-    --     { "<leader>mr",  "<cmd>Neominimap Refresh<cr>",     desc = "Refresh global minimap" },
-    --
-    --     -- Window-Specific Minimap Controls
-    --     { "<leader>nwt", "<cmd>Neominimap WinToggle<cr>",   desc = "Toggle minimap for current window" },
-    --     { "<leader>nwr", "<cmd>Neominimap WinRefresh<cr>",  desc = "Refresh minimap for current window" },
-    --     { "<leader>nwo", "<cmd>Neominimap WinEnable<cr>",   desc = "Enable minimap for current window" },
-    --     { "<leader>nwc", "<cmd>Neominimap WinDisable<cr>",  desc = "Disable minimap for current window" },
-    --
-    --     -- Tab-Specific Minimap Controls
-    --     { "<leader>ntt", "<cmd>Neominimap TabToggle<cr>",   desc = "Toggle minimap for current tab" },
-    --     { "<leader>ntr", "<cmd>Neominimap TabRefresh<cr>",  desc = "Refresh minimap for current tab" },
-    --     { "<leader>nto", "<cmd>Neominimap TabEnable<cr>",   desc = "Enable minimap for current tab" },
-    --     { "<leader>ntc", "<cmd>Neominimap TabDisable<cr>",  desc = "Disable minimap for current tab" },
-    --
-    --     -- Buffer-Specific Minimap Controls
-    --     { "<leader>nbt", "<cmd>Neominimap BufToggle<cr>",   desc = "Toggle minimap for current buffer" },
-    --     { "<leader>nbr", "<cmd>Neominimap BufRefresh<cr>",  desc = "Refresh minimap for current buffer" },
-    --     { "<leader>nbo", "<cmd>Neominimap BufEnable<cr>",   desc = "Enable minimap for current buffer" },
-    --     { "<leader>nbc", "<cmd>Neominimap BufDisable<cr>",  desc = "Disable minimap for current buffer" },
-    --
-    --     ---Focus Controls
-    --     { "<leader>mf",  "<cmd>Neominimap Focus<cr>",       desc = "Focus on minimap" },
-    --     { "<leader>mu",  "<cmd>Neominimap Unfocus<cr>",     desc = "Unfocus minimap" },
-    --     { "<leader>ms",  "<cmd>Neominimap ToggleFocus<cr>", desc = "Switch focus on minimap" },
-    --   },
-    --   init = function()
-    --     -- The following options are recommended when layout == "float"
-    --     vim.opt.wrap = false
-    --     vim.opt.sidescrolloff = 36 -- Set a large value
-    --
-    --     --- Put your configuration here
-    --     ---@type Neominimap.UserConfig
-    --     vim.g.neominimap = {
-    --       auto_enable = true,
-    --     }
-    --   end,
-    -- }
 }

@@ -27,12 +27,15 @@ vim.keymap.set("n", "<leader>fp",
 vim.keymap.set("n", "<leader>fr", [[:%s/\<<C-r><C-w>\>//g<Left><Left>]], {
     desc = "Replace word under cursor",
 })
+
+map('n', '<leader>db', '<cmd>DBUIToggle<CR>', { desc = "Toggle DB UI" })
 -- Find and replace end here
 map('n', 'gd', builtin.lsp_definitions, { desc = "Go to Definition" })
 map('n', 'gi', builtin.lsp_implementations, { desc = "Implementations" })
 map('n', 'gt', builtin.lsp_type_definitions, { desc = "Type Definitions" })
 map('n', 'gs', builtin.lsp_document_symbols, { desc = "Document Symbols" })
 map('n', 'gr', builtin.lsp_references)
+map("n", "<leader>fl", require("telescope.builtin").lsp_references, { noremap = true, silent = true })
 -- Noice nvim keymap
 map("n", "<leader>ml", function()
     require("noice").cmd("last")
@@ -50,7 +53,19 @@ end
 map("i", "<C-p>", "copilot#Accept('<CR>')", { noremap = true, silent = true, expr = true, replace_keycodes = false })
 
 map("x", "<leader>p", '"_dP', { desc = "Paste without overwriting register" })
--- Git Blame Toggle
+
+----------------------------------------------------------------------------------------------------------------------------------
+-- Toggle spell check
+map("n", "<leader>sp", function()
+    vim.opt.spell = not vim.opt.spell:get()
+    vim.notify("Spell Check : " .. (vim.opt.spell:get() and "enabled" or "disabled"),
+        vim.log.levels.INFO,
+        { title = "Editor" }
+    )
+end, { desc = "Toggle spell check" })
+
+----------------------------------------------------------------------------------------------------------------------------------
+--Git Blame Toggle
 map("n", "<leader>gt", ":Gitsigns toggle_current_line_blame<CR>", { noremap = true, silent = true })
 map("n", "<leader>td", ":Td<CR>", { noremap = true, silent = true })
 -- Toggle Relative Numbers

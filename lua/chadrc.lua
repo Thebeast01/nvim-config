@@ -18,13 +18,13 @@ M.base46 = {
             italic = true
         },
         String = {
-            italic = false,
+            italic = true,
         },
         Variable = {
             italic = true,
         },
         ['@string'] = {
-            italic = false,
+            italic = true,
         },
         Function = {
             italic = true,
@@ -59,7 +59,7 @@ M.nvdash = {
         " ███████████  ██████████ █████   █████░░█████████     █████   ",
         "░░░░░░░░░░░  ░░░░░░░░░░ ░░░░░   ░░░░░  ░░░░░░░░░     ░░░░░    ",
 
-        "Welcome Beast to Your Coding Setup! 🔥",
+        "Welcome Beast  🔥",
         "                                      ",
         "                                      ",
     },
@@ -88,7 +88,7 @@ M.ui = {
     cmp = {
         style = "flat_dark", -- default/flat_light/flat_dark/atom/atom_colored
         format_colors = {
-            tailwind = false,
+            tailwind = true, 
         },
         -- border_color = "aquarium",
         -- kind_icon = "aquarium",
