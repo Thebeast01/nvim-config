@@ -1,14 +1,47 @@
 return {
 
-{
-  "luckasRanarison/tailwind-tools.nvim",
-  name = "tailwind-tools",
-  build = ":UpdateRemotePlugins",
-  dependencies = {
-    "nvim-treesitter/nvim-treesitter",
-    "nvim-telescope/telescope.nvim", -- optional
-    "neovim/nvim-lspconfig", -- optional
-  },
+-- {
+--   "supermaven-inc/supermaven-nvim",
+--   lazy = false, -- FIX: force load on startup, don't wait for blink.cmp
+--   config = function()
+--     require("supermaven-nvim").setup({
+--       -- Optional configuration settings
+--       keymaps = {
+--         accept_suggestion = "<Tab>",
+--         clear_suggestion = "<C-]>",
+--         accept_word = "<C-j>",
+--       },
+--       ignore_filetypes = { cpp = true }, -- example to ignore files
+--       color = {
+--         suggestion_color = "#ffffff",
+--         cterm = 244,
+--       },
+--       log_level = "info", -- "info", "warn", "error", "debug"
+--       -- FIX: set to true so supermaven feeds into blink.cmp as a source
+--       -- instead of rendering its own inline ghost text (conflicts with blink)
+--       disable_inline_completion = true,
+--       disable_keymaps = false, -- disables built-in keymaps for manual control
+--     })
+--   end,
+-- },
+-- {
+--     "brenoprata10/nvim-highlight-colors",
+--     event = "BufReadPre",
+--     opts = {
+--         render = "foreground",
+--         enable_tailwind = true,
+--         -- Add these to exclude LSP-provided background colors
+--         exclude_filetypes = {},
+--         exclude_buftypes = {},
+--     },
+-- },
+{ 
+    "roobert/tailwindcss-colorizer-cmp.nvim", 
+    config = function () 
+        require("tailwindcss-colorizer-cmp").setup({
+            color_square_width = 1
+        })
+    end
 },
     {
         "BeastInBash/todos.nvim",
@@ -160,10 +193,11 @@ return {
         end,
     },
 
-    {
-        'wakatime/vim-wakatime',
-        lazy = false
-    },
+    -- {
+    --     'wakatime/vim-wakatime',
+    --     lazy = false
+    -- },
+
 
     {
         "nvim-telescope/telescope-media-files.nvim",
@@ -224,12 +258,12 @@ return {
             require("todo-comments").setup {
                 signs = true,
                 keywords = {
-                    FIX    = { icon = "", color = "error", alt = { "FIXME", "BUG", "ISSUE" } },
-                    TODO   = { icon = "", color = "info" },
-                    HACK   = { icon = "", color = "warning" },
-                    WARN   = { icon = "", color = "warning", alt = { "WARNING" } },
-                    PERF   = { icon = "", color = "hint", alt = { "OPTIM", "PERFORMANCE" } },
-                    NOTE   = { icon = "", color = "info", alt = { "INFO" } },
+                    FIX    = { icon = "", color = "error", alt = { "FIXME", "BUG", "ISSUE" } },
+                    TODO   = { icon = "", color = "info" },
+                    HACK   = { icon = "", color = "warning" },
+                    WARN   = { icon = "", color = "warning", alt = { "WARNING" } },
+                    PERF   = { icon = "", color = "hint", alt = { "OPTIM", "PERFORMANCE" } },
+                    NOTE   = { icon = "", color = "info", alt = { "INFO" } },
                     TEST   = { icon = "⏲", color = "test", alt = { "TESTING", "FAILED" } },
                     PASSED = { icon = "✔ ", color = "success", alt = { "PASSED" } },
                 },
@@ -372,27 +406,45 @@ return {
     --     vim.g.copilot_tab_fallback = ""
     --   end,
     -- },
-    {
-        "hrsh7th/nvim-cmp",
-        dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-cmdline",
-        },
-        config = function()
-            local cmp = require "cmp"
-            cmp.setup {
-                sources = {
-                    { name = "nvim_lsp" },
-                    { name = "buffer" },
-                    { name = "path" },
-                },
-            }
-        end,
-    },
+
+-- FIX: nvim-cmp commented out in favour of blink.cmp above.
+-- Keeping it here for reference. If you want to switch back:
+--   1. Uncomment this block
+--   2. Comment out the blink.cmp block below
+--   3. Set disable_inline_completion = false in supermaven (it will render its own ghost text)
+--      OR set it to true and add { name = "supermaven" } to cmp sources
+-- {
+--     "hrsh7th/nvim-cmp",
+--     dependencies = {
+--         "hrsh7th/cmp-nvim-lsp",
+--         "hrsh7th/cmp-buffer",
+--         "hrsh7th/cmp-path",
+--         "hrsh7th/cmp-cmdline",
+--         "roobert/tailwindcss-colorizer-cmp.nvim",
+--     },
+--     config = function()
+--         local cmp = require("cmp")
+--         local colorizer = require("tailwindcss-colorizer-cmp")
+--         -- NOTE: colorizer.setup() is already called in the tailwindcss-colorizer-cmp
+--         -- plugin block above, no need to call it again here.
+--         cmp.setup {
+--             formatting = {
+--                 format = colorizer.formatter,
+--             },
+--             sources = {
+--                 { name = "supermaven" }, -- FIX: supermaven source (requires disable_inline_completion = true)
+--                 { name = "nvim_lsp" },
+--                 { name = "buffer" },
+--                 { name = "path" },
+--             },
+--         }
+--     end,
+-- },
+
     {
         "jose-elias-alvarez/null-ls.nvim",
+        -- NOTE: null-ls is archived/unmaintained. Consider switching to:
+        -- "nvimtools/none-ls.nvim" which is the community-maintained fork.
         config = function()
             local null_ls = require "null-ls"
             null_ls.setup {
@@ -575,46 +627,36 @@ return {
 
     {
         'saghen/blink.cmp',
-        dependencies = { 'rafamadriz/friendly-snippets' },
+        dependencies = {
+            'rafamadriz/friendly-snippets',
+            -- NOTE: supermaven-nvim is loaded separately with lazy = false
+            -- Do NOT add it here as a dependency or it causes a load deadlock
+        },
         version = '1.*',
 
         ---@module 'blink.cmp'
         ---@type blink.cmp.Config
         opts = {
-            -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
-            -- 'super-tab' for mappings similar to vscode (tab to accept)
-            -- 'enter' for enter to accept
-            -- 'none' for no mappings
-            --
-            -- All presets have the following mappings:
-            -- C-space: Open menu or open docs if already open
-            -- C-n/C-p or Up/Down: Select next/previous item
-            -- C-e: Hide menu
-            -- C-k: Toggle signature help (if signature.enabled = true)
-            --
-            -- See :h blink-cmp-config-keymap for defining your own keymap
             keymap = { preset = 'default' },
 
             appearance = {
-                -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-                -- Adjusts spacing to ensure icons are aligned
                 nerd_font_variant = 'mono'
             },
 
             -- (Default) Only show the documentation popup when manually triggered
             completion = { documentation = { auto_show = false } },
 
-            -- Default list of enabled providers defined so that you can extend it
-            -- elsewhere in your config, without redefining it, due to `opts_extend`
             sources = {
-                default = { 'lsp', 'path', 'snippets', 'buffer' },
+                -- FIX: added 'supermaven' as a completion source
+                default = { 'lsp', 'path', 'snippets', 'buffer', 'supermaven' },
+                providers = {
+                    supermaven = {
+                        name = 'supermaven',
+                        module = 'blink.compat.source',
+                    },
+                },
             },
 
-            -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
-            -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
-            -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
-            --
-            -- See the fuzzy documentation for more information
             fuzzy = { implementation = "prefer_rust_with_warning" }
         },
         opts_extend = { "sources.default" }

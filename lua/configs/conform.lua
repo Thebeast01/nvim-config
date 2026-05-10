@@ -1,7 +1,7 @@
 local options = {
     formatters_by_ft = {
         solidity = { "prettier" }, -- Changed to "prettier"
-        lua = { "stylua" },
+        lua = { "prettier" },
         css = { "prettier" },
         java = { "prettier" }, -- Changed to "prettier"
         html = { "prettier" },
@@ -58,12 +58,12 @@ local options = {
         -- ======================
         -- Stylua (Lua)
         -- ======================
-        stylua = {
-            args = {
-                "--config-path",
-                vim.fn.stdpath("config") .. "/stylua.toml",
-            },
-        },
+        -- stylua = {
+        --     args = {
+        --         "--config-path",
+        --         vim.fn.stdpath("config") .. "/stylua.toml",
+        --     },
+        -- },
     },
 
     -- Global options

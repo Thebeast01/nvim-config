@@ -12,6 +12,7 @@ opt.autoindent = true
 
 -- ui
 opt.cursorlineopt = "both"
+opt.number = false
 opt.relativenumber = true
 opt.scrolloff = 10
 opt.sidescrolloff = 10
@@ -25,3 +26,4 @@ opt.breakindent = true
 opt.textwidth = 120 -- visual wrap only
 opt.formatoptions:append("t")
 -- opt.colorcolumn = "100" -- guideline only
+

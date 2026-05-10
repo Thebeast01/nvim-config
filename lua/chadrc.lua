@@ -17,19 +17,7 @@ M.base46 = {
             fg = "#8790b7",
             italic = true
         },
-        String = {
-            italic = true,
-        },
         Variable = {
-            italic = true,
-        },
-        ['@string'] = {
-            italic = true,
-        },
-        Function = {
-            italic = true,
-        },
-        ['@function'] = {
             italic = true,
         },
         CursorLineNr = {
@@ -88,7 +76,7 @@ M.ui = {
     cmp = {
         style = "flat_dark", -- default/flat_light/flat_dark/atom/atom_colored
         format_colors = {
-            tailwind = true, 
+            tailwind = false, 
         },
         -- border_color = "aquarium",
         -- kind_icon = "aquarium",
