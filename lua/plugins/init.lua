@@ -1,48 +1,122 @@
 return {
-
 -- {
---   "supermaven-inc/supermaven-nvim",
---   lazy = false, -- FIX: force load on startup, don't wait for blink.cmp
---   config = function()
---     require("supermaven-nvim").setup({
---       -- Optional configuration settings
---       keymaps = {
---         accept_suggestion = "<Tab>",
---         clear_suggestion = "<C-]>",
---         accept_word = "<C-j>",
---       },
---       ignore_filetypes = { cpp = true }, -- example to ignore files
---       color = {
---         suggestion_color = "#ffffff",
---         cterm = 244,
---       },
---       log_level = "info", -- "info", "warn", "error", "debug"
---       -- FIX: set to true so supermaven feeds into blink.cmp as a source
---       -- instead of rendering its own inline ghost text (conflicts with blink)
---       disable_inline_completion = true,
---       disable_keymaps = false, -- disables built-in keymaps for manual control
---     })
---   end,
--- },
--- {
---     "brenoprata10/nvim-highlight-colors",
---     event = "BufReadPre",
---     opts = {
---         render = "foreground",
---         enable_tailwind = true,
---         -- Add these to exclude LSP-provided background colors
---         exclude_filetypes = {},
---         exclude_buftypes = {},
+--     "mfussenegger/nvim-dap",
+--     lazy = false,    
+--     dependencies = {
+--         "rcarriga/nvim-dap-ui",
+--         "leoluz/nvim-dap-go",
+--         "williamboman/mason.nvim", -- needed to locate js-debug-adapter
+--         "nvim-neotest/nvim-nio",
 --     },
+--     config = function()
+--         local dap = require("dap")
+--         local dapui = require('dapui') 
+--         dapui.setup()
+--         require("dap-go").setup()
+--         dap.listeners.before.attach.dapui_config = function()
+--           dapui.open()
+--         end
+--         dap.listeners.before.launch.dapui_config = function()
+--           dapui.open()
+--         end
+--         dap.listeners.before.event_terminated.dapui_config = function()
+--           dapui.close()
+--         end
+--         dap.listeners.before.event_exited.dapui_config = function()
+--           dapui.close()
+--         end
+--         -- ─── Go (already handled by nvim-dap-go) ───────────────────────
+--
+--         require("dap-go").setup()
+--
+--         -- ─── JS/TS adapter ──────────────────────────────────────────────
+--
+--         -- Register pwa-node adapter
+--         dap.adapters["pwa-node"] = {
+--             type = "server",
+--             host = "localhost",
+--             port = "${port}",
+--             executable = {
+--                 command = "js-debug-adapter",
+--                 args = { "${port}" },
+--             },
+--         }
+--
+--         -- Alias bare "node" → "pwa-node" for VSCode-style launch.json compat
+--         dap.adapters["node"] = function(cb, config)
+--             config.type = "pwa-node"
+--             local native = dap.adapters["pwa-node"]
+--             if type(native) == "function" then
+--                 native(cb, config)
+--             else
+--                 cb(native)
+--             end
+--         end
+--
+--         -- ─── JS/TS configurations ────────────────────────────────────────
+--
+--         local js_filetypes = {
+--             "typescript", "javascript",
+--             "typescriptreact", "javascriptreact",
+--         }
+--
+--         for _, ft in ipairs(js_filetypes) do
+--             dap.configurations[ft] = {
+--                 -- Launch current file with Node
+--                 {
+--                     type    = "pwa-node",
+--                     request = "launch",
+--                     name    = "Launch file",
+--                     program = "${file}",
+--                     cwd     = "${workspaceFolder}",
+--                 },
+--                 -- Attach to a running process
+--                 {
+--                     type      = "pwa-node",
+--                     request   = "attach",
+--                     name      = "Attach to process",
+--                     processId = require("dap.utils").pick_process,
+--                     cwd       = "${workspaceFolder}",
+--                 },
+--                 -- Launch with tsx (great for TS without compiling)
+--                 {
+--                     type                = "pwa-node",
+--                     request             = "launch",
+--                     name                = "Launch with tsx",
+--                     program             = "${file}",
+--                     runtimeExecutable   = "tsx",
+--                     cwd                 = "${workspaceFolder}",
+--                     console             = "integratedTerminal",
+--                     skipFiles           = {
+--                         "<node_internals>/**",
+--                         "${workspaceFolder}/node_modules/**",
+--                     },
+--                 },
+--             }
+--         end
+--
+--         -- ─── Keymaps ─────────────────────────────────────────────────────
+--
+--         vim.keymap.set("n", "<leader>dc",        dap.continue)
+--         vim.keymap.set("n", "<leader>so",       dap.step_over)
+--         vim.keymap.set("n", "<leader>si",       dap.step_into)
+--         vim.keymap.set("n", "<leader>sot",       dap.step_out)
+--         vim.keymap.set("n", "<leader>dt",  dap.toggle_breakpoint, {})
+--         vim.keymap.set("n", "<leader>dB",  function()
+--             dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+--         end)
+--     end,
 -- },
-{ 
-    "roobert/tailwindcss-colorizer-cmp.nvim", 
-    config = function () 
-        require("tailwindcss-colorizer-cmp").setup({
-            color_square_width = 1
-        })
-    end
-},
+--     
+
+    -- { 
+    --     "roobert/tailwindcss-colorizer-cmp.nvim", 
+    --     config = function () 
+    --         require("tailwindcss-colorizer-cmp").setup({
+    --             color_square_width = 1
+    --         })
+    --     end
+    -- },
     {
         "BeastInBash/todos.nvim",
         event = "VeryLazy", -- lazy-load on first real event
@@ -193,10 +267,10 @@ return {
         end,
     },
 
-    -- {
-    --     'wakatime/vim-wakatime',
-    --     lazy = false
-    -- },
+    {
+        'wakatime/vim-wakatime',
+        lazy = false
+    },
 
 
     {

@@ -15,7 +15,7 @@ local servers = {
     "pyright",
     "rust_analyzer",
     "clangd",
-    -- Removed: "typescript_language_server" (duplicate of ts_ls)
+    "prettier",
      "postgres-language-server"
 }
 
@@ -59,7 +59,7 @@ end
 
 vim.lsp.config("tailwindcss", {
 on_attach = function(client, bufnr)
-    client.server_capabilities.colorProvider = false,  -- kills bg boxes in JSX/TSX
+    client.server_capabilities.colorProvider = false,
     on_attach(client, bufnr)
 end,
     capabilities = capabilities,
