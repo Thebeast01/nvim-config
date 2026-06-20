@@ -15,8 +15,8 @@ local servers = {
     "pyright",
     "rust_analyzer",
     "clangd",
-    "prettier",
-     "postgres-language-server"
+    "marksman"
+
 }
 
 vim.lsp.enable(servers)
@@ -35,8 +35,8 @@ local lsp_flags = {
 
 local on_attach = function(client, bufnr)
     local opts = { buffer = bufnr, silent = true }
-    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+    vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
+    vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
     vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
     vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
@@ -46,7 +46,7 @@ local on_attach = function(client, bufnr)
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
     vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
 
-    if client.supports_method("textDocument/formatting") then
+    if client:supports_method("textDocument/formatting", bufnr) then
         vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = bufnr,
             callback = function()
@@ -58,10 +58,10 @@ local on_attach = function(client, bufnr)
 end
 
 vim.lsp.config("tailwindcss", {
-on_attach = function(client, bufnr)
-    client.server_capabilities.colorProvider = false,
-    on_attach(client, bufnr)
-end,
+    on_attach = function(client, bufnr)
+        client.server_capabilities.colorProvider = false
+        on_attach(client, bufnr)
+    end,
     capabilities = capabilities,
     flags = lsp_flags,
     filetypes = {

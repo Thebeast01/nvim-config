@@ -8,7 +8,11 @@ local g = vim.g
 -----------------------------------------------------------
 
 opt.encoding = "utf-8"
-opt.fileencoding = "utf-8"
+-- NOTE: `fileencoding` is buffer-local. Setting it here breaks startup with
+-- `E21: Cannot make changes, 'modifiable' is off` when the config is sourced
+-- while a non-modifiable buffer (e.g. the Lazy installer UI) is current.
+-- `encoding = "utf-8"` already makes new files UTF-8, so this is not needed.
+-- If you really want it, set it per-buffer via a FileType/BufReadPost autocmd.
 
 opt.mouse = "a"
 opt.clipboard = "unnamedplus"
@@ -23,7 +27,7 @@ opt.swapfile = false
 opt.undofile = true
 
 opt.updatetime = 250
-opt.timeoutlen = 400
+opt.timeoutlen = 200
 opt.ttimeoutlen = 10
 
 opt.autoread = true
@@ -215,6 +219,12 @@ opt.lazyredraw = false
 -- DIAGNOSTICS
 -----------------------------------------------------------
 
+vim.api.nvim_create_autocmd("TextYankPost", {
+    desc = "Highlight when yanking (copying) text",
+    callback = function()
+        vim.hl.on_yank()
+    end,
+})
 vim.diagnostic.config {
     virtual_text = true,
     signs = true,
@@ -228,6 +238,14 @@ vim.diagnostic.config {
     --   source = "always",
     -- },
 }
+
+-----------------------------------------------------------
+-- BUFFER LIMIT (tabufline tabs)
+-----------------------------------------------------------
+
+-- Keep at most 3 buffers open; opening more evicts the least-recently-used
+-- inactive buffer. See lua/configs/buflimit.lua.
+require "configs.buflimit"
 
 -----------------------------------------------------------
 -- STATUSCOLUMN
@@ -366,9 +384,3 @@ opt.whichwrap:append "<>[]hl"
 -- Lua:
 -- vim.opt.wrap = true
 -- vim.opt.number = false
-vim.api.nvim_create_autocmd("TextYankPost", {
-    desc = "Highlight when yanking (copying) text",
-    callback = function()
-        vim.hl.on_yank()
-    end,
-})

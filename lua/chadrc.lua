@@ -5,9 +5,9 @@
 ---@type ChadrcConfig
 local M = {}
 M.base46 = {
-    theme = "gruvchad",
+    theme = "obsidian-ember",
     transparency= true,
-    theme_toggle = { "gruvchad", "gruvchad" },
+    theme_toggle = { "obsidian-ember", "obsidian-ember" },
     hl_override = {
         Comment = {
             fg = "#e8a093",
@@ -21,10 +21,11 @@ M.base46 = {
             italic = true,
         },
         CursorLineNr = {
-            fg = "#FFA555"
+            fg = "#765e93"
         },
         LineNr = {
-            fg = "#765e93"
+
+            fg = "#FFA555"
         },
         ["@variable"] = {
             italic = true,
@@ -68,7 +69,7 @@ M.ui = {
        order = { "treeOffset", "buffers", "tabs", "btns" },
        modules = nil,
        bufwidth = 21,
-     }, 
+     },
     statusline = {
        theme = "minimal", -- default/vscode/vscode_colored/minimal
         separator_style = "default",
@@ -108,8 +109,8 @@ M.ui = {
      },
     telescope = {
         style = "borderless",
-        results_color = "gruvchad",
-        preview_color = "gruvchad",
+        results_color = "obsidian-ember",
+        preview_color = "obsidian-ember",
     },
    colorify = {
      enabled = true,

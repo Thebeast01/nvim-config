@@ -18,17 +18,14 @@ end, { desc = "Toggle word wrap" })
 map("n", "<leader>r", ":set relativenumber!<CR>", { noremap = true, silent = true, desc = "Toggle relative numbers" })
 
 map("n", "<leader>sp", function()
-    vim.opt.spell = not vim.opt.spell:get()
+    vim.opt.spell = not vim.opt.spell()
     vim.notify(
-        "Spell Check: " .. (vim.opt.spell:get() and "enabled" or "disabled"),
+        "Spell Check: " .. (vim.opt.spell() and "enabled" or "disabled"),
         vim.log.levels.INFO,
         { title = "Editor" }
     )
 end, { desc = "Toggle spell check" })
 
-map("n", "<leader>tt", function()
-    vim.opt.showtabline = vim.opt.showtabline:get() == 0 and 2 or 0
-end, { desc = "Toggle tabline" })
 
 -- ─────────────────────────────────────────────────────────────
 -- LSP
@@ -67,7 +64,6 @@ map("n", "<leader>fp", [[:%s/\<<C-r><C-w>\>//gc<Left><Left>]], {
 
 -- Paste over selection without clobbering register
 map("x", "p", '"_dP', { noremap = true, silent = true, desc = "Paste without overwriting register" })
-
 -- Move selected lines up/down
 map("v", "J", ":m '>+1<CR>gv=gv", { noremap = true, silent = true, desc = "Move selection down" })
 map("v", "K", ":m '<-2<CR>gv=gv", { noremap = true, silent = true, desc = "Move selection up" })
@@ -120,7 +116,8 @@ map("n", "<leader>db", "<cmd>DBUIToggle<CR>", { desc = "Toggle DB UI" })
 map("i", "<C-p>", "copilot#Accept('<CR>')", {
     noremap = true, silent = true, expr = true, replace_keycodes = false, desc = "Copilot accept",
 })
-
+map("n", "<C-d>", "<C-d>zz", { desc = "move down in buffer with cursor centered" })
+map("n", "<C-u>", "<C-u>zz", { desc = "move up in buffer with cursor centered" })
 -- ─────────────────────────────────────────────────────────────
 -- Completion (cmp)
 -- ─────────────────────────────────────────────────────────────
