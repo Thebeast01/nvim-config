@@ -73,7 +73,7 @@ return {
             idle = {
                 enabled = true,
                 timeout = 300000, -- 5 minutes
-                text = "Gone dark... 🌑",
+                text = "Beating around the Bush",
                 tooltip = "Probably debugging in my head",
             },
             text = {

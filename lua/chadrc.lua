@@ -17,9 +17,6 @@ M.base46 = {
             fg = "#8790b7",
             italic = true
         },
-        Variable = {
-            italic = true,
-        },
         CursorLineNr = {
             fg = "#765e93"
         },
@@ -27,9 +24,12 @@ M.base46 = {
 
             fg = "#FFA555"
         },
-        ["@variable"] = {
+        ["@keyword"] = {
             italic = true,
         },
+        ["@variable"] = {
+            italic = true,
+        }
 
     },
 }
