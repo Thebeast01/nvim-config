@@ -71,7 +71,7 @@ return {
                 reset_on_change = false,
             },
             idle = {
-                enabled = true,
+                enabled = false,
                 timeout = 300000, -- 5 minutes
                 text = "Beating around the Bush",
                 tooltip = "Probably debugging in my head",
