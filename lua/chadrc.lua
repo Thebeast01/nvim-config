@@ -5,20 +5,118 @@
 ---@type ChadrcConfig
 local M = {}
 M.base46 = {
-  theme = "rosepine",
-  transparency = true,
-  hl_override = {
-    Comment = { italic = true },
-    ["@comment"] = {
-      italic = true,
-      -- fg = "#5F7D95", -- Pale Light blue
-      fg = "#7E6B8F", -- Pale Lavander
-      -- fg = "#8C7E6B" -- Warm Taupe
-      -- fg = "#6e9695" -- Pale Green
-      -- fg = "#6E8B7F" -- Pale Blue
-      --underdashed = true
+    theme = "obsidian-ember",
+    transparency= true,
+    theme_toggle = { "obsidian-ember", "obsidian-ember" },
+    hl_override = {
+        Comment = {
+            fg = "#e8a093",
+            italic = true
+        },
+        ["@comment"] = {
+            fg = "#8790b7",
+            italic = true
+        },
+        CursorLineNr = {
+            fg = "#765e93"
+        },
+        LineNr = {
+
+            fg = "#FFA555"
+        },
+        ["@keyword"] = {
+            italic = true,
+        },
+        ["@variable"] = {
+            italic = true,
+        }
 
     },
-  },
+}
+
+M.nvdash = {
+    load_on_startup = true,
+
+    header = {
+        " ███████████  ██████████   █████████    █████████  ███████████",
+        "░░███░░░░░███░░███░░░░░█  ███░░░░░███  ███░░░░░███░█░░░███░░░█",
+        " ░███    ░███ ░███  █ ░  ░███    ░███ ░███    ░░░ ░   ░███  ░ ",
+        " ░██████████  ░██████    ░███████████ ░░█████████     ░███    ",
+        " ░███░░░░░███ ░███░░█    ░███░░░░░███  ░░░░░░░░███    ░███    ",
+        " ░███    ░███ ░███ ░   █ ░███    ░███  ███    ░███    ░███    ",
+        " ███████████  ██████████ █████   █████░░█████████     █████   ",
+        "░░░░░░░░░░░  ░░░░░░░░░░ ░░░░░   ░░░░░  ░░░░░░░░░     ░░░░░    ",
+
+        "Welcome Beast  🔥",
+        "                                      ",
+        "                                      ",
+    },
+}
+vim.fn.timer_start(1000, function()
+    vim.cmd("redrawstatus")
+end, { ["repeat"] = -1 })
+vim.api.nvim_set_hl(0, "StatusTime", {
+    fg = "#f5a97f",
+    bg = "NONE",
+    italic = true,
+})
+M.ui = {
+     -- lazyload it when there are 1+ buffers
+     tabufline = {
+       enabled = true,
+       lazyload = true,
+       treeOffsetFt = "NvimTree",
+       order = { "treeOffset", "buffers", "tabs", "btns" },
+       modules = nil,
+       bufwidth = 21,
+     },
+    statusline = {
+       theme = "minimal", -- default/vscode/vscode_colored/minimal
+        separator_style = "default",
+        order = {
+            "mode",
+            "file",
+            "%=", -- push next modules to center
+            "time",
+            "git",
+            "diagnostics",
+            "lsp",
+            "%=", -- push remaining to right
+            "cwd",
+            "cursor",
+        },
+        modules ={
+            pwd = function()
+                local pwd = vim.fn.getcwd()
+                local folder = vim.fn.fnamemodify(pwd, ":t")
+                return " " .. folder .. " "
+            end,
+            time = function()
+            -- 12 hour format
+            return "%#StatusTime#󰥔 " .. os.date("%I:%M:%S") .. " "
+            
+            -- 24 hour format:
+            -- return "󰥔 " .. os.date("%H:%M") .. " "
+            end,
+        }
+    },
+     cmp = {
+       lspkind_text = true,
+       style = "atom_colored", -- default/flat_light/flat_dark/atom/atom_colored
+       format_colors = {
+         lsp = true,
+       },
+     },
+    telescope = {
+        style = "borderless",
+        results_color = "obsidian-ember",
+        preview_color = "obsidian-ember",
+    },
+   colorify = {
+     enabled = true,
+     mode = "virtual", -- fg, bg, virtual
+     virt_text = "󱓻 ",
+     highlight = { hex = true, lspvars = false },
+   },
 }
 return M
