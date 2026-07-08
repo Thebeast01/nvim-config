@@ -35,6 +35,17 @@ return {
                         show = {
                             git = true,
                         },
+                        glyphs = {
+                            git = {
+                                unstaged = "✗",
+                                staged = "✓",
+                                unmerged = "",
+                                renamed = "➜",
+                                untracked = "·", -- small dot; was "★"/"●", colored red below
+                                deleted = "",
+                                ignored = "◌",
+                            },
+                        },
                     },
                 },
                 view = {
@@ -51,6 +62,16 @@ return {
                     },
                 },
             }
+
+            -- Show untracked files (icon + filename) in red.
+            -- Re-applied on ColorScheme so base46 reloads don't reset it.
+            local function untracked_red()
+                vim.api.nvim_set_hl(0, "NvimTreeGitNewIcon", { fg = "#e06c75" })
+                vim.api.nvim_set_hl(0, "NvimTreeGitFileNewHL", { fg = "#e06c75" })
+                vim.api.nvim_set_hl(0, "NvimTreeGitFolderNewHL", { fg = "#e06c75" })
+            end
+            untracked_red()
+            vim.api.nvim_create_autocmd("ColorScheme", { callback = untracked_red })
         end,
     },
 
