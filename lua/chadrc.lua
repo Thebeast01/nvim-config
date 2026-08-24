@@ -5,9 +5,9 @@
 ---@type ChadrcConfig
 local M = {}
 M.base46 = {
-    theme = "obsidian-ember",
-    transparency= true,
-    theme_toggle = { "obsidian-ember", "obsidian-ember" },
+    theme = "chocolate",
+    transparency = true,
+    theme_toggle = { "chocolate", "everforest" },
     hl_override = {
         Comment = {
             fg = "#e8a093",
@@ -61,23 +61,23 @@ vim.api.nvim_set_hl(0, "StatusTime", {
     italic = true,
 })
 M.ui = {
-     -- lazyload it when there are 1+ buffers
-     tabufline = {
-       enabled = true,
-       lazyload = true,
-       treeOffsetFt = "NvimTree",
-       order = { "treeOffset", "buffers", "tabs", "btns" },
-       modules = nil,
-       bufwidth = 21,
-     },
+    -- lazyload it when there are 1+ buffers
+    tabufline = {
+        enabled = true,
+        lazyload = true,
+        treeOffsetFt = "NvimTree",
+        order = { "treeOffset", "buffers", "tabs", "btns" },
+        modules = nil,
+        bufwidth = 21,
+    },
     statusline = {
-       theme = "minimal", -- default/vscode/vscode_colored/minimal
-        separator_style = "default",
+        theme = "minimal", -- default/vscode/vscode_colored/minimal
+        separator_style = "arrow",
         order = {
             "mode",
             "file",
             "%=", -- push next modules to center
-            "time",
+            --"time",
             "git",
             "diagnostics",
             "lsp",
@@ -85,38 +85,38 @@ M.ui = {
             "cwd",
             "cursor",
         },
-        modules ={
+        modules = {
             pwd = function()
                 local pwd = vim.fn.getcwd()
                 local folder = vim.fn.fnamemodify(pwd, ":t")
                 return " " .. folder .. " "
             end,
             time = function()
-            -- 12 hour format
-            return "%#StatusTime#󰥔 " .. os.date("%I:%M:%S") .. " "
-            
-            -- 24 hour format:
-            -- return "󰥔 " .. os.date("%H:%M") .. " "
+                -- 12 hour format
+                return "%#StatusTime#󰥔 " .. os.date("%I:%M:%S") .. " "
+
+                -- 24 hour format:
+                -- return "󰥔 " .. os.date("%H:%M") .. " "
             end,
         }
     },
-     cmp = {
-       lspkind_text = true,
-       style = "atom_colored", -- default/flat_light/flat_dark/atom/atom_colored
-       format_colors = {
-         lsp = true,
-       },
-     },
+    cmp = {
+        lspkind_text = true,
+        style = "atom_colored", -- default/flat_light/flat_dark/atom/atom_colored
+        format_colors = {
+            lsp = true,
+        },
+    },
     telescope = {
         style = "borderless",
-        results_color = "obsidian-ember",
-        preview_color = "obsidian-ember",
+        results_color = "chocolate",
+        preview_color = "chocolate",
     },
-   colorify = {
-     enabled = true,
-     mode = "virtual", -- fg, bg, virtual
-     virt_text = "󱓻 ",
-     highlight = { hex = true, lspvars = false },
-   },
+    colorify = {
+        enabled = true,
+        mode = "virtual", -- fg, bg, virtual
+        virt_text = "󱓻 ",
+        highlight = { hex = true, lspvars = false },
+    },
 }
 return M
