@@ -8,13 +8,13 @@ return {
         event = "VeryLazy",
         opts = {
             messages = {
-                enabled = true,
+                enabled = false,
             },
             notify = {
                 enabled = true,
             },
             popupmenu = {
-                enabled = false, -- disable popupmenu UI
+                enabled = true, -- disable popupmenu UI
             },
             cmdline = {
                 enabled = true, -- keep cmdline enabled

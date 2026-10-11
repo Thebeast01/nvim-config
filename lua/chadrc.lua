@@ -5,9 +5,9 @@
 ---@type ChadrcConfig
 local M = {}
 M.base46 = {
-    theme = "obsidian-ember",
+    theme = "chocolate",
     transparency= true,
-    theme_toggle = { "obsidian-ember", "obsidian-ember" },
+    theme_toggle = { "chocolate", "chocolate" },
     hl_override = {
         Comment = {
             fg = "#e8a093",
@@ -94,7 +94,6 @@ M.ui = {
             time = function()
             -- 12 hour format
             return "%#StatusTime#󰥔 " .. os.date("%I:%M:%S") .. " "
-            
             -- 24 hour format:
             -- return "󰥔 " .. os.date("%H:%M") .. " "
             end,
@@ -109,8 +108,8 @@ M.ui = {
      },
     telescope = {
         style = "borderless",
-        results_color = "obsidian-ember",
-        preview_color = "obsidian-ember",
+        results_color = "chocolate",
+        preview_color = "chocolate",
     },
    colorify = {
      enabled = true,
